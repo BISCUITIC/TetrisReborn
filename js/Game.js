@@ -25,9 +25,10 @@ export default class Game {
   constructor(board, tetraminoBag, colourBag) {
     this.#keyManager = new KeyboardManager();
 
-    this.#board = board;
     this.#tetraminoBag = tetraminoBag;
     this.#colourBag = colourBag;
+
+    this.#board = board;
     this.#tetramino = this.#generateNext();
 
     this.#frameCounter = 0;
@@ -55,17 +56,15 @@ export default class Game {
   }
 
   #keyLogger() {
-    const { direction, rotate, speedUp } = this.#keyManager.pressedBuffer;
-
-    console.log({ direction, rotate, speedUp });
-
-    if (direction === "right" && !this.#checkCollision(1, 0))
+    if (this.#keyManager.right && !this.#checkCollision(1, 0))
       this.#tetramino.move(1, 0);
-    if (direction === "left" && !this.#checkCollision(-1, 0))
-      this.#tetramino.move(-1, 0);
-    if (rotate) this.#tetramino.rotate();
 
-    this.#speedUp = speedUp;
+    if (this.#keyManager.left && !this.#checkCollision(-1, 0))
+      this.#tetramino.move(-1, 0);
+
+    if (this.#keyManager.rotate) this.#tetramino.rotate();
+
+    this.#speedUp = this.#keyManager.speedUp;
   }
 
   #gravity() {
