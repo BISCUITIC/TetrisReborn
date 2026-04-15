@@ -8,26 +8,31 @@ export default class Game {
   #tetramino;
 
   #frameCounter;
-  #speedMode;
+  #keyCounter;
 
   get gameSpeed() {
-    if (this.#speedMode) return 10;
+    if (this.#keyManager.down) return 5;
     else return 30;
+  }
+  get keySpeed() {
+    return 5;
   }
 
   constructor(board, tetramino) {
     this.#keyManager = new KeyboardManager();
-    // document.addEventListener("keydown", (event) => this.#keyLogger(event));
 
     this.#board = board;
     this.#tetramino = tetramino;
 
     this.#frameCounter = 0;
-    this.#speedMode = false;
+    this.#keyCounter = 0;
   }
 
   update(context) {
-    this.#keyLogger();
+    if (this.#keyCounter >= this.keySpeed) {
+      this.#keyLogger();
+      this.#keyCounter = 0;
+    }
 
     if (this.#frameCounter >= this.gameSpeed) {
       this.#gravity();
@@ -37,20 +42,15 @@ export default class Game {
     this.#board.draw(context);
     this.#tetramino.draw(context);
 
-    this.#speedMode = false;
     this.#frameCounter++;
+    this.#keyCounter++;
   }
 
-  #keyLogger(event) {
-    if (this.#keyManager.right) {
-      if (!this.#checkCollision(1, 0)) this.#tetramino.move(1, 0);
-    }
-    if (this.#keyManager.left) {
-      if (!this.#checkCollision(-1, 0)) this.#tetramino.move(-1, 0);
-    }
-    if (this.#keyManager.down) {
-      this.#speedMode = true;
-    }
+  #keyLogger() {
+    const { left, right } = this.#keyManager;
+
+    if (right && !this.#checkCollision(1, 0)) this.#tetramino.move(1, 0);
+    if (left && !this.#checkCollision(-1, 0)) this.#tetramino.move(-1, 0);
   }
 
   #gravity() {
