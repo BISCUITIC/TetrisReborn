@@ -5,18 +5,21 @@ export default class Game {
   #keyManager;
 
   #board;
+  #tetramino;
+
   #tetraminoBag;
   #colourBag;
-  #tetramino;
 
   #frameCounter;
   #keyCounter;
 
+  #speedUp;
+
   get gameSpeed() {
-    return this.#keyManager.down ? 10 : 30;
+    return this.#speedUp ? 5 : 30;
   }
   get keySpeed() {
-    return 7;
+    return 5;
   }
 
   constructor(board, tetraminoBag, colourBag) {
@@ -29,6 +32,8 @@ export default class Game {
 
     this.#frameCounter = 0;
     this.#keyCounter = 0;
+
+    this.#speedUp = false;
   }
 
   update(context) {
@@ -50,11 +55,17 @@ export default class Game {
   }
 
   #keyLogger() {
-    const { left, right, up } = this.#keyManager;
+    const { direction, rotate, speedUp } = this.#keyManager.pressedBuffer;
 
-    if (right && !this.#checkCollision(1, 0)) this.#tetramino.move(1, 0);
-    if (left && !this.#checkCollision(-1, 0)) this.#tetramino.move(-1, 0);
-    if (up) this.#tetramino.rotate();
+    console.log({ direction, rotate, speedUp });
+
+    if (direction === "right" && !this.#checkCollision(1, 0))
+      this.#tetramino.move(1, 0);
+    if (direction === "left" && !this.#checkCollision(-1, 0))
+      this.#tetramino.move(-1, 0);
+    if (rotate) this.#tetramino.rotate();
+
+    this.#speedUp = speedUp;
   }
 
   #gravity() {

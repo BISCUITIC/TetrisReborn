@@ -1,66 +1,50 @@
 export default class KeyboardManager {
-  #left;
-  #right;
-  #up;
-  #down;
+  #pressedButtons;
 
-  get left() {
-    return this.#left;
-  }
-  get right() {
-    return this.#right;
-  }
-  get up() {
-    return this.#up;
-  }
-  get down() {
-    return this.#down;
+  get pressedBuffer() {
+    const result = { ...this.#pressedButtons };
+
+    return result;
   }
 
   constructor() {
     document.addEventListener("keydown", (event) => this.#keyDown(event));
     document.addEventListener("keyup", (event) => this.#keyUp(event));
-    this.#left = false;
-    this.#right = false;
-    this.#up = false;
-    this.#down = false;
+
+    this.#pressedButtons = {
+      direction: "",
+      speedUp: false,
+      rotate: false,
+    };
   }
 
   #keyDown(event) {
     if (event.key === "a") {
-      this.#left = true;
-      console.log("a");
+      this.#pressedButtons.direction = "left";
     }
     if (event.key === "d") {
-      this.#right = true;
-      console.log("d");
+      this.#pressedButtons.direction = "right";
     }
     if (event.key === "w") {
-      this.#up = true;
-      console.log("w");
+      this.#pressedButtons.rotate = true;
     }
     if (event.key === "s") {
-      this.#down = true;
-      console.log("s");
+      this.#pressedButtons.speedUp = true;
     }
   }
 
   #keyUp(event) {
-    if (event.key === "a") {
-      this.#left = false;
-      console.log("a");
+    if (event.key === "a" && this.#pressedButtons.direction === "left") {
+      this.#pressedButtons.direction = "";
     }
-    if (event.key === "d") {
-      this.#right = false;
-      console.log("d");
+    if (event.key === "d" && this.#pressedButtons.direction === "right") {
+      this.#pressedButtons.direction = "";
     }
-    if (event.key === "w") {
-      this.#up = false;
-      console.log("w");
+    if (event.key === "w" && this.#pressedButtons.rotate) {
+      this.#pressedButtons.rotate = false;
     }
-    if (event.key === "s") {
-      this.#down = false;
-      console.log("s");
+    if (event.key === "s" && this.#pressedButtons.speedUp) {
+      this.#pressedButtons.speedUp = false;
     }
   }
 }
