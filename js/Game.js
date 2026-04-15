@@ -16,7 +16,7 @@ export default class Game {
     return this.#keyManager.down ? 10 : 30;
   }
   get keySpeed() {
-    return 5;
+    return 7;
   }
 
   constructor(board, tetraminoBag, colourBag) {
@@ -50,10 +50,11 @@ export default class Game {
   }
 
   #keyLogger() {
-    const { left, right } = this.#keyManager;
+    const { left, right, up } = this.#keyManager;
 
     if (right && !this.#checkCollision(1, 0)) this.#tetramino.move(1, 0);
     if (left && !this.#checkCollision(-1, 0)) this.#tetramino.move(-1, 0);
+    if (up) this.#tetramino.rotate();
   }
 
   #gravity() {

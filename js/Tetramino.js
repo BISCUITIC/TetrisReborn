@@ -42,4 +42,23 @@ export default class Tetramino {
     this.#x += dx;
     this.#y += dy;
   }
+
+  rotate() {
+    const base = this.#body.map((row) => [...row]);
+    this.#body = this.#body.map((row) => row.map((el) => 0));
+
+    const module = this.#body.length - 1;
+
+    for (let row = 0; row < this.#body.length; row++) {
+      for (let column = 0; column < this.#body[row].length; column++) {
+        if (base[row][column] !== 0) {
+          this.#body[
+            column + module > module
+              ? (column + module) % module
+              : column + module
+          ][row] = 1;
+        }
+      }
+    }
+  }
 }

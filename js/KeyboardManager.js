@@ -27,16 +27,40 @@ export default class KeyboardManager {
   }
 
   #keyDown(event) {
-    if (event.key === "a") this.#left = true;
-    if (event.key === "d") this.#right = true;
-    if (event.key === "w") this.#up = true;
-    if (event.key === "s") this.#down = true;
+    if (event.key === "a") {
+      this.#left = true;
+      console.log("a");
+    }
+    if (event.key === "d") {
+      this.#right = true;
+      console.log("d");
+    }
+    if (event.key === "w") {
+      this.#up = true;
+      console.log("w");
+    }
+    if (event.key === "s") {
+      this.#down = true;
+      console.log("s");
+    }
   }
 
   #keyUp(event) {
-    if (event.key === "a") this.#left = false;
-    if (event.key === "d") this.#right = false;
-    if (event.key === "w") this.#up = false;
-    if (event.key === "s") this.#down = false;
+    if (event.key === "a") {
+      this.#left = false;
+      console.log("a");
+    }
+    if (event.key === "d") {
+      this.#right = false;
+      console.log("d");
+    }
+    if (event.key === "w") {
+      this.#up = false;
+      console.log("w");
+    }
+    if (event.key === "s") {
+      this.#down = false;
+      console.log("s");
+    }
   }
 }
