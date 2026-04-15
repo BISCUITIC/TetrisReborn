@@ -1,5 +1,4 @@
 import Board from "./Board.js";
-import Tetramino from "./Tetramino.js";
 import Game from "./Game.js";
 import Bag from "./Bag.js";
 
@@ -7,20 +6,8 @@ const canvas = document.getElementById("game");
 const context = canvas.getContext("2d");
 
 const board = new Board(10, 20);
-board.draw(context);
 
-const tetraminoS = new Tetramino(
-  5,
-  0,
-  [
-    [0, 1, 0],
-    [1, 1, 1],
-    [0, 0, 0],
-  ],
-  "rgb(255,255,155)",
-);
-
-const bag = new Bag([
+const tetraminoBag = new Bag([
   [
     [0, 1, 0],
     [1, 1, 1],
@@ -38,7 +25,17 @@ const bag = new Bag([
   ],
 ]);
 
-const game = new Game(board, bag);
+const colourBag = new Bag([
+  "rgb(0, 255, 255)",
+  "rgb(255, 255, 0)",
+  "rgb(128, 0, 128)",
+  "rgb(0, 255, 0)",
+  "rgb(255, 0, 0)",
+  "rgb(0, 0, 255)",
+  "rgb(255, 165, 0)",
+]);
+
+const game = new Game(board, tetraminoBag, colourBag);
 
 function loop() {
   context.clearRect(0, 0, 300, 600);

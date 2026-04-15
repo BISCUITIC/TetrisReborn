@@ -5,7 +5,8 @@ export default class Game {
   #keyManager;
 
   #board;
-  #bag;
+  #tetraminoBag;
+  #colourBag;
   #tetramino;
 
   #frameCounter;
@@ -18,11 +19,12 @@ export default class Game {
     return 5;
   }
 
-  constructor(board, bag) {
+  constructor(board, tetraminoBag, colourBag) {
     this.#keyManager = new KeyboardManager();
 
     this.#board = board;
-    this.#bag = bag;
+    this.#tetraminoBag = tetraminoBag;
+    this.#colourBag = colourBag;
     this.#tetramino = this.#generateNext();
 
     this.#frameCounter = 0;
@@ -64,7 +66,12 @@ export default class Game {
   }
 
   #generateNext() {
-    return new Tetramino(5, 0, this.#bag.next(), "rgb(255,255,155)");
+    return new Tetramino(
+      5,
+      0,
+      this.#tetraminoBag.next(),
+      this.#colourBag.next(),
+    );
   }
 
   #checkCollision(dx, dy) {
