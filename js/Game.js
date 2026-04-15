@@ -5,24 +5,25 @@ export default class Game {
   #keyManager;
 
   #board;
+  #bag;
   #tetramino;
 
   #frameCounter;
   #keyCounter;
 
   get gameSpeed() {
-    if (this.#keyManager.down) return 5;
-    else return 30;
+    return this.#keyManager.down ? 10 : 30;
   }
   get keySpeed() {
     return 5;
   }
 
-  constructor(board, tetramino) {
+  constructor(board, bag) {
     this.#keyManager = new KeyboardManager();
 
     this.#board = board;
-    this.#tetramino = tetramino;
+    this.#bag = bag;
+    this.#tetramino = this.#generateNext();
 
     this.#frameCounter = 0;
     this.#keyCounter = 0;
@@ -63,16 +64,7 @@ export default class Game {
   }
 
   #generateNext() {
-    return new Tetramino(
-      0,
-      0,
-      [
-        [0, 1, 0],
-        [1, 1, 1],
-        [0, 0, 0],
-      ],
-      "rgb(255,255,155)",
-    );
+    return new Tetramino(5, 0, this.#bag.next(), "rgb(255,255,155)");
   }
 
   #checkCollision(dx, dy) {
@@ -110,9 +102,6 @@ export default class Game {
     let body = this.#tetramino.body;
 
     let field = this.#board.field;
-
-    console.log(body);
-    console.log(field);
 
     for (let i = 0; i < body.length; i++) {
       for (let j = 0; j < body[i].length; j++) {
