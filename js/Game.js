@@ -73,28 +73,28 @@ export default class Game {
     if (
       (rightPressed || rightClicked) &&
       !leftPressed &&
-      !this.#checkCollision(1, 0)
+      this.#hasNoCollision(1, 0, this.#tetramino)
     )
       this.#tetramino.move(1, 0);
 
     if (
       (leftPressed || leftClicked) &&
       !rightPressed &&
-      !this.#checkCollision(-1, 0)
+      this.#hasNoCollision(-1, 0, this.#tetramino)
     )
       this.#tetramino.move(-1, 0);
 
-    if (rotateClicked) this.#tetramino.rotate();
+    if (rotateClicked && this.#canRotate()) this.#tetramino.rotate();
 
     this.#speedUp = speedUpPressed || speedUpClicked;
   }
 
   #gravity() {
-    if (this.#checkCollision(0, 1)) {
+    if (this.#hasNoCollision(0, 1, this.#tetramino)) {
+      this.#tetramino.move(0, 1);
+    } else {
       this.#placeTetramino();
       this.#tetramino = this.#generateNext();
-    } else {
-      this.#tetramino.move(0, 1);
     }
   }
 
@@ -107,41 +107,55 @@ export default class Game {
     );
   }
 
-  #checkCollision(dx, dy) {
-    let tetraminoX = this.#tetramino.x;
-    let tetraminoY = this.#tetramino.y;
-    let body = this.#tetramino.body;
+  #hasNoCollision(dx, dy, tetramino) {
+    const tetraminoX = tetramino.x;
+    const tetraminoY = tetramino.y;
+    const body = tetramino.body;
 
-    let left = 0;
-    let right = this.#board.width;
-    let top = 0;
-    let bottom = this.#board.height;
+    const left = 0;
+    const right = this.#board.width;
+    const top = 0;
+    const bottom = this.#board.height;
 
-    let field = this.#board.field;
+    const field = this.#board.field;
 
     for (let i = 0; i < body.length; i++) {
       for (let j = 0; j < body[i].length; j++) {
         if (body[i][j] === 0) continue;
 
-        if (tetraminoY + i + dy >= bottom) return true;
-        if (tetraminoY + i + dy < top) return true;
+        if (tetraminoY + i + dy >= bottom) return false;
+        if (tetraminoY + i + dy < top) return false;
 
-        if (tetraminoX + j + dx >= right) return true;
-        if (tetraminoX + j + dx < left) return true;
+        if (tetraminoX + j + dx >= right) return false;
+        if (tetraminoX + j + dx < left) return false;
 
-        if (field[tetraminoY + i + dy][tetraminoX + j + dx]) return true;
+        if (field[tetraminoY + i + dy][tetraminoX + j + dx]) return false;
       }
     }
 
-    return false;
+    return true;
+  }
+
+  #canRotate() {
+    const rotated = new Tetramino(
+      this.#tetramino.x,
+      this.#tetramino.y,
+      [...this.#tetramino.body],
+      this.#tetramino.colour,
+    );
+
+    rotated.rotate();
+    console.log(rotated);
+
+    return this.#hasNoCollision(0, 0, rotated);
   }
 
   #placeTetramino() {
-    let tetraminoX = this.#tetramino.x;
-    let tetraminoY = this.#tetramino.y;
-    let body = this.#tetramino.body;
+    const tetraminoX = this.#tetramino.x;
+    const tetraminoY = this.#tetramino.y;
+    const body = this.#tetramino.body;
 
-    let field = this.#board.field;
+    const field = this.#board.field;
 
     for (let i = 0; i < body.length; i++) {
       for (let j = 0; j < body[i].length; j++) {
