@@ -11,9 +11,17 @@ export default class SizeMananger {
     return SizeMananger.#blockSize;
   }
 
-  static set(canvas, boardWidth, boardHeight) {
-    SizeMananger.#filedWidth = canvas.clientWidth;
-    SizeMananger.#filedHeight = canvas.clientHeight;
+  static get fieldWidth() {
+    return SizeMananger.#filedWidth;
+  }
+
+  static get fieldHeight() {
+    return SizeMananger.#filedHeight;
+  }
+
+  static set(body, boardWidth, boardHeight) {
+    SizeMananger.#filedWidth = body.clientWidth - 50;
+    SizeMananger.#filedHeight = body.clientHeight - 50;
 
     SizeMananger.#boardWidth = boardWidth;
     SizeMananger.#boardHeight = boardHeight;
@@ -22,9 +30,12 @@ export default class SizeMananger {
   }
 
   static #calculate() {
-    const widthMaxSize = Math.floor(this.#filedWidth / this.#boardWidth);
-    const heightMaxSize = Math.floor(this.#filedHeight / this.#boardHeight);
+    const widthMaxSize = this.#filedWidth / this.#boardWidth;
+    const heightMaxSize = this.#filedHeight / this.#boardHeight;
 
-    this.#blockSize = Math.min(widthMaxSize, heightMaxSize);
+    this.#blockSize = Math.floor(Math.min(widthMaxSize, heightMaxSize));
+
+    SizeMananger.#filedWidth = this.#blockSize * this.#boardWidth;
+    SizeMananger.#filedHeight = this.#blockSize * this.#boardHeight;
   }
 }

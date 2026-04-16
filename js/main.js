@@ -11,7 +11,10 @@ const filedContext = filedCanvas.getContext("2d");
 const width = 10;
 const height = 20;
 
-SizeMananger.set(filedCanvas, width, height);
+SizeMananger.set(document.body, width, height);
+
+filedCanvas.height = SizeMananger.fieldHeight;
+filedCanvas.width = SizeMananger.fieldWidth;
 
 const board = new Board(width, height);
 
@@ -69,7 +72,12 @@ const keyboardManager = new KeyboardManager();
 const game = new Game(board, tetraminoManager, keyboardManager);
 
 function loop() {
-  filedContext.clearRect(0, 0, 300, 600);
+  filedContext.clearRect(
+    0,
+    0,
+    SizeMananger.fieldWidth,
+    SizeMananger.fieldHeight,
+  );
 
   game.update(filedContext);
 
