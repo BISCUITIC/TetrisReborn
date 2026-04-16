@@ -43,8 +43,6 @@ export default class KeyboardManager {
   #keyDown(event) {
     if (event.repeat) return;
 
-    console.log(event);
-
     if (event.code === "KeyA") {
       this.#pressed.left = true;
       this.#clicked.left = true;

@@ -145,7 +145,6 @@ export default class Game {
     );
 
     rotated.rotate();
-    console.log(rotated);
 
     return this.#hasNoCollision(0, 0, rotated);
   }
