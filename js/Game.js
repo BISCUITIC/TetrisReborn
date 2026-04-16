@@ -44,6 +44,7 @@ export default class Game {
 
     if (this.#frameCounter >= this.gameSpeed) {
       this.#gravity();
+      this.#board.update();
       this.#frameCounter = 0;
     }
 
