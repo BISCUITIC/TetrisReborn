@@ -1,14 +1,15 @@
 import Tetramino from "./Tetramino.js";
-import KeyboardManager from "./KeyboardManager.js";
 
 export default class Game {
+  static defaultSpeed = 30;
+  static uppedSpeed = 5;
+  static keySpeed = 5;
+
   #keyManager;
+  #tetraminoManager;
 
   #board;
   #tetramino;
-
-  #tetraminoBag;
-  #colourBag;
 
   #frameCounter;
   #keyCounter;
@@ -16,20 +17,18 @@ export default class Game {
   #speedUp;
 
   get gameSpeed() {
-    return this.#speedUp ? 5 : 60;
+    return this.#speedUp ? Game.uppedSpeed : Game.defaultSpeed;
   }
   get keySpeed() {
-    return 5;
+    return Game.keySpeed;
   }
 
-  constructor(board, tetraminoBag, colourBag) {
-    this.#keyManager = new KeyboardManager();
-
-    this.#tetraminoBag = tetraminoBag;
-    this.#colourBag = colourBag;
+  constructor(board, tetraminoManager, keyboardManager) {
+    this.#tetraminoManager = tetraminoManager;
+    this.#keyManager = keyboardManager;
 
     this.#board = board;
-    this.#tetramino = this.#generateNext();
+    this.#tetramino = this.#tetraminoManager.generateNext();
 
     this.#frameCounter = 0;
     this.#keyCounter = 0;
@@ -94,17 +93,8 @@ export default class Game {
       this.#tetramino.move(0, 1);
     } else {
       this.#placeTetramino();
-      this.#tetramino = this.#generateNext();
+      this.#tetramino = this.#tetraminoManager.generateNext();
     }
-  }
-
-  #generateNext() {
-    return new Tetramino(
-      5,
-      0,
-      this.#tetraminoBag.next(),
-      this.#colourBag.next(),
-    );
   }
 
   #hasNoCollision(dx, dy, tetramino) {

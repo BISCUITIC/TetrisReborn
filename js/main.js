@@ -1,6 +1,8 @@
 import Board from "./Board.js";
 import Game from "./Game.js";
 import Bag from "./Bag.js";
+import TetraminoManager from "./TetraminoManager.js";
+import KeyboardManager from "./KeyboardManager.js";
 
 const canvas = document.getElementById("game");
 const context = canvas.getContext("2d");
@@ -57,7 +59,9 @@ const colourBag = new Bag([
   "rgb(255, 165, 0)",
 ]);
 
-const game = new Game(board, tetraminoBag, colourBag);
+const tetraminoManager = new TetraminoManager(tetraminoBag, colourBag);
+const keyboardManager = new KeyboardManager();
+const game = new Game(board, tetraminoManager, keyboardManager);
 
 function loop() {
   context.clearRect(0, 0, 300, 600);

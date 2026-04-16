@@ -19,6 +19,10 @@ export default class Tetramino {
     return this.#body;
   }
 
+  get colour() {
+    return this.#colour;
+  }
+
   constructor(x, y, body, colour) {
     this.#x = x;
     this.#y = y;
