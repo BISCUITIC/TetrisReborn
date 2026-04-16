@@ -1,7 +1,6 @@
-export default class Block {
-  static width = 20;
-  static height = 20;
+import SizeMananger from "./Managers/SizeManager.js";
 
+export default class Block {
   #x;
   #y;
 
@@ -16,10 +15,10 @@ export default class Block {
   draw(context) {
     context.fillStyle = this.#colour;
     context.fillRect(
-      this.#x * Block.width,
-      this.#y * Block.height,
-      Block.width,
-      Block.height,
+      this.#x * SizeMananger.blockSize,
+      this.#y * SizeMananger.blockSize,
+      SizeMananger.blockSize,
+      SizeMananger.blockSize,
     );
   }
 }
