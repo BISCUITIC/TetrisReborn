@@ -16,7 +16,7 @@ export default class Game {
   #speedUp;
 
   get gameSpeed() {
-    return this.#speedUp ? 5 : 30;
+    return this.#speedUp ? 5 : 60;
   }
   get keySpeed() {
     return 5;
@@ -56,15 +56,37 @@ export default class Game {
   }
 
   #keyLogger() {
-    if (this.#keyManager.right && !this.#checkCollision(1, 0))
+    const {
+      right: rightPressed,
+      left: leftPressed,
+      rotate: rotatePressed,
+      speedUp: speedUpPressed,
+    } = this.#keyManager.pressed;
+
+    const {
+      right: rightClicked,
+      left: leftClicked,
+      rotate: rotateClicked,
+      speedUp: speedUpClicked,
+    } = this.#keyManager.clicked;
+
+    if (
+      (rightPressed || rightClicked) &&
+      !leftPressed &&
+      !this.#checkCollision(1, 0)
+    )
       this.#tetramino.move(1, 0);
 
-    if (this.#keyManager.left && !this.#checkCollision(-1, 0))
+    if (
+      (leftPressed || leftClicked) &&
+      !rightPressed &&
+      !this.#checkCollision(-1, 0)
+    )
       this.#tetramino.move(-1, 0);
 
-    if (this.#keyManager.rotate) this.#tetramino.rotate();
+    if (rotateClicked) this.#tetramino.rotate();
 
-    this.#speedUp = this.#keyManager.speedUp;
+    this.#speedUp = speedUpPressed || speedUpClicked;
   }
 
   #gravity() {

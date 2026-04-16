@@ -5,6 +5,8 @@ import Bag from "./Bag.js";
 const canvas = document.getElementById("game");
 const context = canvas.getContext("2d");
 
+// console.log(context.canvas.clientHeight);
+
 const board = new Board(10, 20);
 
 const tetraminoBag = new Bag([
