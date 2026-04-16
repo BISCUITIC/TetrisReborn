@@ -43,19 +43,21 @@ export default class KeyboardManager {
   #keyDown(event) {
     if (event.repeat) return;
 
-    if (event.key === "a") {
+    console.log(event);
+
+    if (event.code === "KeyA") {
       this.#pressed.left = true;
       this.#clicked.left = true;
     }
-    if (event.key === "d") {
+    if (event.code === "KeyD") {
       this.#pressed.right = true;
       this.#clicked.right = true;
     }
-    if (event.key === "w") {
+    if (event.code === "KeyW" || event.code === "Space") {
       this.#pressed.rotate = true;
       this.#clicked.rotate = true;
     }
-    if (event.key === "s") {
+    if (event.code === "KeyS") {
       this.#pressed.speedUp = true;
       this.#clicked.speedUp = true;
     }
