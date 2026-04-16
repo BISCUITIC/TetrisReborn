@@ -1,8 +1,8 @@
 import Board from "./Board.js";
 import Game from "./Game.js";
 import Bag from "./Bag.js";
-import TetraminoManager from "./TetraminoManager.js";
-import KeyboardManager from "./KeyboardManager.js";
+import TetraminoManager from "./Managers/TetraminoManager.js";
+import KeyboardManager from "./Managers/KeyboardManager.js";
 
 const canvas = document.getElementById("game");
 const context = canvas.getContext("2d");

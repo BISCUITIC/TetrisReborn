@@ -1,4 +1,4 @@
-import Tetramino from "./Tetramino.js";
+import Tetramino from "../Tetramino.js";
 
 export default class TetraminoManager {
   #tetraminoBag;
