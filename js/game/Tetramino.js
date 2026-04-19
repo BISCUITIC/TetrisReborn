@@ -7,6 +7,14 @@ export default class Tetramino {
   #body;
   #colour;
 
+  set x(x) {
+    this.#x = x;
+  }
+
+  set y(y) {
+    this.#y = y;
+  }
+
   get x() {
     return this.#x;
   }
@@ -33,7 +41,7 @@ export default class Tetramino {
   draw(context) {
     for (let row = 0; row < this.#body.length; row++) {
       for (let column = 0; column < this.#body[row].length; column++) {
-        if (this.#body[row][column] !== 0) {
+        if (this.#body[row][column] && this.#body[row][column] !== 0) {
           new Block(this.#x + column, this.#y + row, this.#colour).draw(
             context,
           );

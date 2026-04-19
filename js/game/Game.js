@@ -8,6 +8,8 @@ export default class Game {
   #keyManager;
   #tetraminoManager;
 
+  #eventBus;
+
   #board;
   #tetramino;
 
@@ -23,12 +25,15 @@ export default class Game {
     return Game.keySpeed;
   }
 
-  constructor(board, tetraminoManager, keyboardManager) {
+  constructor(board, tetraminoManager, keyboardManager, eventBus) {
     this.#tetraminoManager = tetraminoManager;
     this.#keyManager = keyboardManager;
 
+    this.#eventBus = eventBus;
+
     this.#board = board;
     this.#tetramino = this.#tetraminoManager.next;
+    this.#eventBus.call("placeTetramino");
 
     this.#frameCounter = 0;
     this.#keyCounter = 0;
@@ -95,6 +100,7 @@ export default class Game {
     } else {
       this.#placeTetramino();
       this.#tetramino = this.#tetraminoManager.next;
+      this.#eventBus.call("placeTetramino");
     }
   }
 

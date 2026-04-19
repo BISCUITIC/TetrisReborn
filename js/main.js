@@ -2,6 +2,7 @@ import Board from "./game/Board.js";
 import NextBox from "./game/NextBox.js";
 import Game from "./game/Game.js";
 import Bag from "./game/Bag.js";
+import EventBus from "./game/EventBus.js";
 import TetraminoManager from "./game/Managers/TetraminoManager.js";
 import KeyboardManager from "./game/Managers/KeyboardManager.js";
 import SizeMananger from "./game/Managers/SizeManager.js";
@@ -12,7 +13,7 @@ const filedCanvas = document.getElementById("field");
 const filedContext = filedCanvas.getContext("2d");
 
 const nextBoxCanvas = document.getElementById("nextBox");
-const nextBoxContext = filedCanvas.getContext("2d");
+const nextBoxContext = nextBoxCanvas.getContext("2d");
 
 const width = 10;
 const height = 20;
@@ -22,6 +23,8 @@ const nextBoxHeight = 5;
 
 resize();
 window.addEventListener("resize", resize);
+
+const eventBus = new EventBus();
 
 const board = new Board(width, height);
 
@@ -81,8 +84,21 @@ const tetraminoManager = new TetraminoManager(
 );
 const keyboardManager = new KeyboardManager();
 
-const game = new Game(board, tetraminoManager, keyboardManager);
-const nextBox = new NextBox(nextBoxWidth, nextBoxHeight);
+const nextBox = new NextBox(tetraminoManager, nextBoxWidth, nextBoxHeight);
+eventBus.addEvent("placeTetramino", () => {
+  nextBox.next();
+
+  nextBoxContext.clearRect(
+    0,
+    0,
+    SizeMananger.nextBoxWidth,
+    SizeMananger.nextBoxHeight,
+  );
+
+  nextBox.update(nextBoxContext);
+});
+
+const game = new Game(board, tetraminoManager, keyboardManager, eventBus);
 
 function resize() {
   SizeMananger.set(gameElement, width, height, nextBoxWidth, nextBoxHeight);
@@ -105,15 +121,7 @@ function loop() {
     SizeMananger.fieldHeight,
   );
 
-  nextBoxContext.clearRect(
-    0,
-    0,
-    SizeMananger.nextBoxWidth,
-    SizeMananger.nextBoxHeight,
-  );
-
   game.update(filedContext);
-  nextBox.update(nextBoxContext);
 
   requestAnimationFrame(loop);
 }
