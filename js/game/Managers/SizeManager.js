@@ -20,8 +20,8 @@ export default class SizeMananger {
   }
 
   static set(body, boardWidth, boardHeight) {
-    SizeMananger.#filedWidth = body.clientWidth - 50;
-    SizeMananger.#filedHeight = body.clientHeight - 50;
+    SizeMananger.#filedWidth = body.clientWidth;
+    SizeMananger.#filedHeight = body.clientHeight;
 
     SizeMananger.#boardWidth = boardWidth;
     SizeMananger.#boardHeight = boardHeight;

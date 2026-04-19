@@ -5,16 +5,16 @@ import TetraminoManager from "./game/Managers/TetraminoManager.js";
 import KeyboardManager from "./game/Managers/KeyboardManager.js";
 import SizeMananger from "./game/Managers/SizeManager.js";
 
-const filedCanvas = document.getElementById("game");
+const gameElement = document.getElementById("game");
+
+const filedCanvas = document.getElementById("field");
 const filedContext = filedCanvas.getContext("2d");
 
 const width = 10;
 const height = 20;
 
-SizeMananger.set(document.body, width, height);
-
-filedCanvas.height = SizeMananger.fieldHeight;
-filedCanvas.width = SizeMananger.fieldWidth;
+resize();
+window.addEventListener("resize", resize);
 
 const board = new Board(width, height);
 
@@ -70,6 +70,13 @@ const tetraminoManager = new TetraminoManager(tetraminoBag, colourBag);
 const keyboardManager = new KeyboardManager();
 
 const game = new Game(board, tetraminoManager, keyboardManager);
+
+function resize() {
+  SizeMananger.set(gameElement, width, height);
+
+  filedCanvas.height = SizeMananger.fieldHeight;
+  filedCanvas.width = SizeMananger.fieldWidth;
+}
 
 function loop() {
   filedContext.clearRect(
