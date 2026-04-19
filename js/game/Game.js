@@ -28,7 +28,7 @@ export default class Game {
     this.#keyManager = keyboardManager;
 
     this.#board = board;
-    this.#tetramino = this.#tetraminoManager.generateNext();
+    this.#tetramino = this.#tetraminoManager.next;
 
     this.#frameCounter = 0;
     this.#keyCounter = 0;
@@ -94,7 +94,7 @@ export default class Game {
       this.#tetramino.move(0, 1);
     } else {
       this.#placeTetramino();
-      this.#tetramino = this.#tetraminoManager.generateNext();
+      this.#tetramino = this.#tetraminoManager.next;
     }
   }
 

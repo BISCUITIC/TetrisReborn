@@ -1,4 +1,5 @@
 import Board from "./game/Board.js";
+import NextBox from "./game/NextBox.js";
 import Game from "./game/Game.js";
 import Bag from "./game/Bag.js";
 import TetraminoManager from "./game/Managers/TetraminoManager.js";
@@ -10,8 +11,14 @@ const gameElement = document.getElementById("game");
 const filedCanvas = document.getElementById("field");
 const filedContext = filedCanvas.getContext("2d");
 
+const nextBoxCanvas = document.getElementById("nextBox");
+const nextBoxContext = filedCanvas.getContext("2d");
+
 const width = 10;
 const height = 20;
+
+const nextBoxWidth = 5;
+const nextBoxHeight = 5;
 
 resize();
 window.addEventListener("resize", resize);
@@ -66,16 +73,28 @@ const colourBag = new Bag([
   "rgb(255, 165, 0)",
 ]);
 
-const tetraminoManager = new TetraminoManager(tetraminoBag, colourBag);
+const tetraminoManager = new TetraminoManager(
+  tetraminoBag,
+  colourBag,
+  width,
+  height,
+);
 const keyboardManager = new KeyboardManager();
 
 const game = new Game(board, tetraminoManager, keyboardManager);
+const nextBox = new NextBox(nextBoxWidth, nextBoxHeight);
 
 function resize() {
-  SizeMananger.set(gameElement, width, height);
+  SizeMananger.set(gameElement, width, height, nextBoxWidth, nextBoxHeight);
+
+  console.log(gameElement.clientWidth);
+  console.log(gameElement.clientHeight);
 
   filedCanvas.height = SizeMananger.fieldHeight;
   filedCanvas.width = SizeMananger.fieldWidth;
+
+  nextBoxCanvas.height = SizeMananger.nextBoxHeight;
+  nextBoxCanvas.width = SizeMananger.nextBoxWidth;
 }
 
 function loop() {
@@ -86,7 +105,15 @@ function loop() {
     SizeMananger.fieldHeight,
   );
 
+  nextBoxContext.clearRect(
+    0,
+    0,
+    SizeMananger.nextBoxWidth,
+    SizeMananger.nextBoxHeight,
+  );
+
   game.update(filedContext);
+  nextBox.update(nextBoxContext);
 
   requestAnimationFrame(loop);
 }
