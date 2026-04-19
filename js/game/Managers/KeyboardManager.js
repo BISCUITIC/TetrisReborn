@@ -62,10 +62,12 @@ export default class KeyboardManager {
   }
 
   #keyUp(event) {
-    if (event.key === "a" && this.#pressed.left) this.#pressed.left = false;
-    if (event.key === "d" && this.#pressed.right) this.#pressed.right = false;
-    if (event.key === "w" && this.#pressed.rotate) this.#pressed.rotate = false;
-    if (event.key === "s" && this.#pressed.speedUp)
+    if (event.code === "KeyA" && this.#pressed.left) this.#pressed.left = false;
+    if (event.code === "KeyD" && this.#pressed.right)
+      this.#pressed.right = false;
+    if (event.code === "KeyW" && this.#pressed.rotate)
+      this.#pressed.rotate = false;
+    if (event.code === "KeyS" && this.#pressed.speedUp)
       this.#pressed.speedUp = false;
   }
 }
