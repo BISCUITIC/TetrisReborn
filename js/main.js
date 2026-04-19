@@ -1,9 +1,9 @@
-import Board from "./Board.js";
-import Game from "./Game.js";
-import Bag from "./Bag.js";
-import TetraminoManager from "./Managers/TetraminoManager.js";
-import KeyboardManager from "./Managers/KeyboardManager.js";
-import SizeMananger from "./Managers/SizeManager.js";
+import Board from "./game/Board.js";
+import Game from "./game/Game.js";
+import Bag from "./game/Bag.js";
+import TetraminoManager from "./game/Managers/TetraminoManager.js";
+import KeyboardManager from "./game/Managers/KeyboardManager.js";
+import SizeMananger from "./game/Managers/SizeManager.js";
 
 const filedCanvas = document.getElementById("game");
 const filedContext = filedCanvas.getContext("2d");
