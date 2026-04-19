@@ -18,6 +18,12 @@ export default class Game {
 
   #speedUp;
 
+  #gameOver;
+
+  get gameOver() {
+    return this.#gameOver;
+  }
+
   get gameSpeed() {
     return this.#speedUp ? Game.uppedSpeed : Game.defaultSpeed;
   }
@@ -39,6 +45,8 @@ export default class Game {
     this.#keyCounter = 0;
 
     this.#speedUp = false;
+
+    this.#gameOver = false;
   }
 
   update(context) {
@@ -101,6 +109,10 @@ export default class Game {
       this.#placeTetramino();
       this.#tetramino = this.#tetraminoManager.next;
       this.#eventBus.call("placeTetramino");
+
+      if (!this.#hasNoCollision(0, 0, this.#tetramino)) {
+        this.#gameOver = true;
+      }
     }
   }
 

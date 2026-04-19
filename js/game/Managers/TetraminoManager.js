@@ -26,7 +26,7 @@ export default class TetraminoManager {
 
   get next() {
     return new Tetramino(
-      Math.floor(this.#width / 2),
+      Math.floor(this.#width / 2 - this.#tetraminoBag.first().length / 2),
       0,
       this.#tetraminoBag.next(),
       this.#colourBag.next(),

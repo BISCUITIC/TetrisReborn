@@ -103,9 +103,6 @@ const game = new Game(board, tetraminoManager, keyboardManager, eventBus);
 function resize() {
   SizeMananger.set(gameElement, width, height, nextBoxWidth, nextBoxHeight);
 
-  console.log(gameElement.clientWidth);
-  console.log(gameElement.clientHeight);
-
   filedCanvas.height = SizeMananger.fieldHeight;
   filedCanvas.width = SizeMananger.fieldWidth;
 
@@ -114,6 +111,8 @@ function resize() {
 }
 
 function loop() {
+  if (game.gameOver) return;
+
   filedContext.clearRect(
     0,
     0,
