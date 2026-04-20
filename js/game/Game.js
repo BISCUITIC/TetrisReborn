@@ -149,7 +149,7 @@ export default class Game {
     const rotated = new Tetramino(
       this.#tetramino.x,
       this.#tetramino.y,
-      [...this.#tetramino.body],
+      this.#tetramino.body.map((row) => [...row]),
       this.#tetramino.colour,
     );
 
