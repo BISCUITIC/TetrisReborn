@@ -9,8 +9,8 @@ import SizeMananger from "./game/Managers/SizeManager.js";
 
 const gameElement = document.getElementById("game");
 
-const filedCanvas = document.getElementById("field");
-const filedContext = filedCanvas.getContext("2d");
+const fieldCanvas = document.getElementById("field");
+const fieldContext = fieldCanvas.getContext("2d");
 
 const nextBoxCanvas = document.getElementById("nextBox");
 const nextBoxContext = nextBoxCanvas.getContext("2d");
@@ -103,8 +103,8 @@ const game = new Game(board, tetraminoManager, keyboardManager, eventBus);
 function resize() {
   SizeMananger.set(gameElement, width, height, nextBoxWidth, nextBoxHeight);
 
-  filedCanvas.height = SizeMananger.fieldHeight;
-  filedCanvas.width = SizeMananger.fieldWidth;
+  fieldCanvas.height = SizeMananger.fieldHeight;
+  fieldCanvas.width = SizeMananger.fieldWidth;
 
   nextBoxCanvas.height = SizeMananger.nextBoxHeight;
   nextBoxCanvas.width = SizeMananger.nextBoxWidth;
@@ -113,14 +113,14 @@ function resize() {
 function loop() {
   if (game.gameOver) return;
 
-  filedContext.clearRect(
+  fieldContext.clearRect(
     0,
     0,
     SizeMananger.fieldWidth,
     SizeMananger.fieldHeight,
   );
 
-  game.update(filedContext);
+  game.update(fieldContext);
 
   requestAnimationFrame(loop);
 }
