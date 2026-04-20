@@ -57,7 +57,8 @@ export default class Game {
 
     if (this.#frameCounter >= this.gameSpeed) {
       this.#gravity();
-      this.#board.update();
+      let linesNumber = this.#board.update();
+      if (linesNumber) this.#eventBus.call("deleteLine", linesNumber);
       this.#frameCounter = 0;
     }
 

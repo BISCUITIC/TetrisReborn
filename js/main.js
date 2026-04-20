@@ -6,8 +6,10 @@ import EventBus from "./game/EventBus.js";
 import TetraminoManager from "./game/Managers/TetraminoManager.js";
 import KeyboardManager from "./game/Managers/KeyboardManager.js";
 import SizeMananger from "./game/Managers/SizeManager.js";
+import ScoreManager from "./game/Managers/ScoreManager.js";
 
 const gameElement = document.getElementById("game");
+const score = document.getElementById("score");
 
 const fieldCanvas = document.getElementById("field");
 const fieldContext = fieldCanvas.getContext("2d");
@@ -25,8 +27,6 @@ resize();
 window.addEventListener("resize", resize);
 
 const eventBus = new EventBus();
-
-const board = new Board(width, height);
 
 const tetraminoBag = new Bag([
   [
@@ -65,7 +65,6 @@ const tetraminoBag = new Bag([
     [1, 1, 0],
   ],
 ]);
-
 const colourBag = new Bag([
   "rgb(0, 255, 255)",
   "rgb(255, 255, 0)",
@@ -75,6 +74,7 @@ const colourBag = new Bag([
   "rgb(0, 0, 255)",
   "rgb(255, 165, 0)",
 ]);
+const points = { 1: 100, 2: 300, 3: 500, 4: 800 };
 
 const tetraminoManager = new TetraminoManager(
   tetraminoBag,
@@ -83,8 +83,13 @@ const tetraminoManager = new TetraminoManager(
   height,
 );
 const keyboardManager = new KeyboardManager();
+const scoreManager = new ScoreManager(points, score);
+
+const board = new Board(width, height);
 
 const nextBox = new NextBox(tetraminoManager, nextBoxWidth, nextBoxHeight);
+const game = new Game(board, tetraminoManager, keyboardManager, eventBus);
+
 eventBus.addEvent("placeTetramino", () => {
   nextBox.next();
 
@@ -98,7 +103,9 @@ eventBus.addEvent("placeTetramino", () => {
   nextBox.update(nextBoxContext);
 });
 
-const game = new Game(board, tetraminoManager, keyboardManager, eventBus);
+eventBus.addEvent("deleteLine", (linesNumber) => {
+  scoreManager.update(linesNumber);
+});
 
 function resize() {
   SizeMananger.set(gameElement, width, height, nextBoxWidth, nextBoxHeight);
