@@ -10,6 +10,7 @@ import ScoreManager from "./game/Managers/ScoreManager.js";
 
 const gameElement = document.getElementById("game");
 const score = document.getElementById("score");
+const bestScore = document.getElementById("best-score");
 
 const fieldCanvas = document.getElementById("field");
 const fieldContext = fieldCanvas.getContext("2d");
@@ -83,7 +84,7 @@ const tetraminoManager = new TetraminoManager(
   height,
 );
 const keyboardManager = new KeyboardManager();
-const scoreManager = new ScoreManager(points, score);
+const scoreManager = new ScoreManager(points, score, bestScore);
 
 const board = new Board(width, height);
 
@@ -105,6 +106,10 @@ eventBus.addEvent("placeTetramino", () => {
 
 eventBus.addEvent("deleteLine", (linesNumber) => {
   scoreManager.update(linesNumber);
+});
+
+eventBus.addEvent("gameOver", () => {
+  scoreManager.save();
 });
 
 function resize() {

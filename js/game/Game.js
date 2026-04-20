@@ -113,6 +113,7 @@ export default class Game {
 
       if (!this.#hasNoCollision(0, 0, this.#tetramino)) {
         this.#gameOver = true;
+        this.#eventBus.call("gameOver");
       }
     }
   }

@@ -33,6 +33,11 @@ body {
   gap: 10px;
 }
 
+.score-info {
+  display: flex;
+  justify-content: space-between;
+}
+
 canvas {
   background: gray;
   border: 2px solid white;
