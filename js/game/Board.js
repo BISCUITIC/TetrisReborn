@@ -67,8 +67,8 @@ export default class Board {
   draw(context) {
     for (let y = 0; y < this.#height; y++) {
       for (let x = 0; x < this.#width; x++) {
-        if (this.#field[y][x] !== 0) {
-          new Block(x, y, "rgb(255,255,255)").draw(context);
+        if (this.#field[y][x] && this.#field[y][x] !== 0) {
+          new Block(x, y, this.#field[y][x]).draw(context);
         }
       }
     }

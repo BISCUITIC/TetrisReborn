@@ -162,13 +162,14 @@ export default class Game {
     const tetraminoX = this.#tetramino.x;
     const tetraminoY = this.#tetramino.y;
     const body = this.#tetramino.body;
+    const colour = this.#tetramino.colour;
 
     const field = this.#board.field;
 
     for (let i = 0; i < body.length; i++) {
       for (let j = 0; j < body[i].length; j++) {
-        if (body[i][j] !== 0) {
-          field[tetraminoY + i][tetraminoX + j] = body[i][j];
+        if (body[i][j] && body[i][j] !== 0) {
+          field[tetraminoY + i][tetraminoX + j] = colour;
         }
       }
     }
