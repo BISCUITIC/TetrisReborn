@@ -1,0 +1,29 @@
+# Сборка и временные файлы
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+*.user
+*.suo
+*.sln.docstates
+*.pidb
+*.log
+*.tmp
+*.vspscc
+*.vssscc
+
+# Visual Studio / Visual Studio Code
+.vs/
+.vscode/
+*.userprefs
+
+# ReSharper
+_ReSharper*/
+*.[Rr]eSharper
+
+# Прочее
+*.csproj.user
+*.pubxml
+*.pfx
