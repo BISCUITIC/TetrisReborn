@@ -17,6 +17,7 @@ export default class ScoreManager {
 
   update(linesNumber) {
     this.#score += this.#points[linesNumber];
+    this.save();
 
     this.#render();
   }
