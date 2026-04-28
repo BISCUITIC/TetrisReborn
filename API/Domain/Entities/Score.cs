@@ -1,32 +1,36 @@
-﻿namespace Domain.Entities;
+﻿using CSharpFunctionalExtensions;
+
+namespace Domain.Entities;
 
 public class Score
 {
-    public Guid Id { get; private set; }
-    public Guid UserId { get; private set; }
+    public Guid Id { get; }
+    public Guid UserId { get; }
 
-    public int Value { get; private set; }
-    public DateTime CreatedAt { get; private set; }
+    public int Value { get; }
+    public DateTime CreatedAt { get; }
 
     private Score() { }
 
-    public Score(Guid userId, int value)
-    {
-        Validate(userId, value);
-
+    private Score(Guid userId, int value, DateTime createdAt)
+    {       
         Id = Guid.NewGuid();
         UserId = userId;
 
         Value = value;
-        CreatedAt = DateTime.UtcNow;
+        CreatedAt = createdAt;
     }
 
-    private void Validate(Guid userId, int value)
+    static public Result<Score> Create(Guid userId, int value)
     {
         if (userId == Guid.Empty)
-            throw new ArgumentException("UserId cannot be empty");
+            return Result.Failure<Score>($"'{nameof(userId)}' cannot be empty");
 
         if (value < 0)
-            throw new ArgumentException("Score cannot be negative");
+            return Result.Failure<Score>("Score cannot be negative");
+
+        Score score = new Score(userId, value, DateTime.UtcNow);
+
+        return Result.Success(score);
     }
 }
