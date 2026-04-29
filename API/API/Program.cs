@@ -8,9 +8,7 @@ public class Program
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
-
+        builder.AddJwtSwaggerGen();
         builder.AddDatabase();
         builder.AddIdentity();
         builder.AddJwtAuthentication();
