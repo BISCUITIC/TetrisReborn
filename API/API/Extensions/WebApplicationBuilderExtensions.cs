@@ -1,4 +1,6 @@
-﻿using Infrastructure.Identity;
+﻿using Infrastructure.Auth;
+using Infrastructure.Identity;
+using Infrastructure.Interfaces;
 using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -13,9 +15,7 @@ internal static class WebApplicationBuilderExtensions
 {
     private const string CONNECTION_STRING_NOT_FOUND =
         "Connection string 'DefaultConnection' not found.";
-    private const string JWT_KEY_NOT_FOUND =
-        "Jwt secret key not found.";
-    private const string JWT_SHEME = 
+    private const string JWT_SHEME =
         JwtBearerDefaults.AuthenticationScheme;
 
     public static void AddJwtSwaggerGen(this WebApplicationBuilder builder)
@@ -69,12 +69,27 @@ internal static class WebApplicationBuilderExtensions
                .AddDefaultTokenProviders();
     }
 
+    public static void AddJwt(this WebApplicationBuilder builder)
+    {
+        builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JwtOptions"));
+
+        builder.Services.AddScoped<IJwtProvider, JwtProvider>();
+    }
+
     public static void AddJwtAuthentication(this WebApplicationBuilder builder)
     {
-        string secretKey = builder.Configuration["Jwt:Key"]
-                                  ?? throw new InvalidOperationException(JWT_KEY_NOT_FOUND);
+        JwtOptions jwtOptions = builder.Configuration
+                                       .GetSection("JwtOptions")
+                                       .Get<JwtOptions>()
+                                       ?? throw new InvalidOperationException("JwtOptions not configured");
 
-        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        string secretKey = jwtOptions.SecretKey;
+
+        builder.Services.AddAuthentication(options =>
+                        {
+                            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                        })
                         .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, (options) =>
                         {
                             options.TokenValidationParameters = new TokenValidationParameters()
@@ -83,7 +98,7 @@ internal static class WebApplicationBuilderExtensions
                                 ValidateAudience = false,
                                 ValidateLifetime = true,
                                 ValidateIssuerSigningKey = true,
-
+                                    
                                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
                             };
                         });

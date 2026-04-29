@@ -1,3 +1,4 @@
+using API.Endpoints;
 using API.Extensions;
 
 namespace API;
@@ -11,12 +12,13 @@ public class Program
         builder.AddJwtSwaggerGen();
         builder.AddDatabase();
         builder.AddIdentity();
+        builder.AddJwt();
         builder.AddJwtAuthentication();
 
         WebApplication app = builder.Build();
 
         app.UseStaticFiles();
-
+        
         app.UseRouting();
 
         if (app.Environment.IsDevelopment())
@@ -28,7 +30,7 @@ public class Program
         app.UseAuthentication();
         app.UseAuthorization();
 
-        app.MapGet("/", () => "Hello World!");
+        app.MapAuthEndpoints();
 
         app.Run();
     }
