@@ -18,6 +18,24 @@ internal static class WebApplicationBuilderExtensions
     private const string JWT_SHEME =
         JwtBearerDefaults.AuthenticationScheme;
 
+    public static void AddDatabase(this WebApplicationBuilder builder)
+    {
+        string connection = builder.Configuration
+                                   .GetConnectionString("DefaultConnection")
+                                   ?? throw new InvalidOperationException(CONNECTION_STRING_NOT_FOUND);
+
+
+        builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection));
+    }
+
+    public static void AddIdentity(this WebApplicationBuilder builder)
+    {
+        builder.Services
+               .AddIdentity<ApplicationUser, IdentityRole<Guid>>()
+               .AddEntityFrameworkStores<ApplicationDbContext>()
+               .AddDefaultTokenProviders();
+    }
+
     public static void AddJwtSwaggerGen(this WebApplicationBuilder builder)
     {
         builder.Services.AddEndpointsApiExplorer();
@@ -49,24 +67,6 @@ internal static class WebApplicationBuilderExtensions
                 }
             });
         });
-    }
-
-    public static void AddDatabase(this WebApplicationBuilder builder)
-    {
-        string connection = builder.Configuration
-                                   .GetConnectionString("DefaultConnection")
-                                   ?? throw new InvalidOperationException(CONNECTION_STRING_NOT_FOUND);
-
-
-        builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection));
-    }
-
-    public static void AddIdentity(this WebApplicationBuilder builder)
-    {
-        builder.Services
-               .AddIdentity<ApplicationUser, IdentityRole<Guid>>()
-               .AddEntityFrameworkStores<ApplicationDbContext>()
-               .AddDefaultTokenProviders();
     }
 
     public static void AddJwt(this WebApplicationBuilder builder)
