@@ -5,7 +5,7 @@ using Domain.Entities;
 namespace Application;
 
 public class ScoreService
-{
+{  
     private readonly IScoreRepository _repository;
 
     public ScoreService(IScoreRepository repository)
@@ -45,5 +45,15 @@ public class ScoreService
     public async Task<Score?> GetUserBestScoreAsync(Guid userId)
     {
         return await _repository.GetBestByUserIdAsync(userId);
+    }
+
+    public async Task<List<Score>> GetUserScoresAsync(Guid userId)
+    {
+        return await _repository.GetByUserIdAsync(userId);
+    }
+
+    public async Task<List<Score>> GetLeaderboardAsync(int leaderBoardSize)
+    {
+        return await _repository.GetLeaderboardAsync(leaderBoardSize);
     }
 }

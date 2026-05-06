@@ -9,13 +9,23 @@ namespace API.Endpoints;
 
 public static class ScoreEndpoints
 {
+    private const int MinLeaderboardSize = 1;
+    private const int DefaultLeaderboardSize = 10;
+    private const int MaxLeaderboardSize = 50; 
+
     public static void MapScoreEndpoints(this WebApplication app)
     {
-        RouteGroupBuilder group = app.MapGroup("scores")
-                                     .RequireAuthorization();
+        RouteGroupBuilder privateGroup = app.MapGroup("scores")
+                                            .RequireAuthorization();
 
-        group.MapPost("", CreateNewScore);
-        group.MapGet("me/best", GetUserBestScore);        
+        RouteGroupBuilder publicGroup = app.MapGroup("scores");
+                                            
+
+        privateGroup.MapPost("", CreateNewScore);
+        privateGroup.MapGet("me", GetUserScores);
+        privateGroup.MapGet("me/best", GetUserBestScore);
+
+        publicGroup.MapGet("leaderboard", GetLeaderboard);             
     }
 
 
@@ -37,6 +47,22 @@ public static class ScoreEndpoints
              : Results.BadRequest(result.Error);
     }
 
+    private static async Task<Microsoft.AspNetCore.Http.IResult> GetUserScores(
+        ClaimsPrincipal user,
+        ScoreService service
+    )
+    {
+        Guid userId;
+
+        if (!user.TryGetUserId(out userId))
+            return Results.Unauthorized();
+
+        List<Score> scores = await service.GetUserScoresAsync(userId);
+
+        return Results.Ok(scores.Select(score => score.ToScoreResponse())
+                                .ToList());
+    }
+
     private static async Task<Microsoft.AspNetCore.Http.IResult> GetUserBestScore(
         ClaimsPrincipal user,
         ScoreService service
@@ -52,5 +78,19 @@ public static class ScoreEndpoints
         return bestScore is null
              ? Results.NotFound()
              : Results.Ok(bestScore.ToScoreResponse());
+    }    
+
+    private static async Task<Microsoft.AspNetCore.Http.IResult> GetLeaderboard(
+        int? top,
+        ScoreService service
+    )
+    {
+        int leaderBoardSize = top is null 
+                            ? DefaultLeaderboardSize
+                            : Math.Clamp(top.Value, MinLeaderboardSize, MaxLeaderboardSize);
+
+        var result = await service.GetLeaderboardAsync(leaderBoardSize);
+
+        return Results.Ok(result);
     }
 }

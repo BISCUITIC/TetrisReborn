@@ -1,7 +1,10 @@
-﻿using Infrastructure.Auth;
+﻿using Application;
+using Application.Interfaces;
+using Infrastructure.Auth;
 using Infrastructure.Identity;
 using Infrastructure.Interfaces;
 using Infrastructure.Persistence;
+using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -104,5 +107,15 @@ internal static class WebApplicationBuilderExtensions
                         });
 
         builder.Services.AddAuthorization();
+    }
+
+    public static void AddRepositories(this WebApplicationBuilder builder)
+    {        
+        builder.Services.AddScoped<IScoreRepository, ScoreRepository>();
+    }
+
+    public static void AddServices(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddScoped<ScoreService>();        
     }
 }
