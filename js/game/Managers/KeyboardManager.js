@@ -42,35 +42,51 @@ export default class KeyboardManager {
 
   #keyDown(event) {
     if (event.repeat) return;
-
-    if (event.code === "KeyA") {
+    console.log(event.code);
+    if (event.code === "KeyA" || event.code === "ArrowLeft") {
       this.#pressed.left = true;
       this.#clicked.left = true;
     }
-    if (event.code === "KeyD") {
+    if (event.code === "KeyD" || event.code === "ArrowRight") {
       this.#pressed.right = true;
       this.#clicked.right = true;
     }
-    if (event.code === "KeyW" || event.code === "Space") {
+    if (
+      event.code === "KeyW" ||
+      event.code === "Space" ||
+      event.code === "ArrowUp"
+    ) {
       this.#pressed.rotate = true;
       this.#clicked.rotate = true;
     }
-    if (event.code === "KeyS") {
+    if (event.code === "KeyS" || event.code === "ArrowDown") {
       this.#pressed.speedUp = true;
       this.#clicked.speedUp = true;
     }
   }
 
   #keyUp(event) {
-    if (event.code === "KeyA" && this.#pressed.left) this.#pressed.left = false;
-    if (event.code === "KeyD" && this.#pressed.right)
+    if (
+      (event.code === "KeyA" || event.code === "ArrowLeft") &&
+      this.#pressed.left
+    )
+      this.#pressed.left = false;
+    if (
+      (event.code === "KeyD" || event.code === "ArrowRight") &&
+      this.#pressed.right
+    )
       this.#pressed.right = false;
     if (
-      event.code === "KeyW" ||
-      (event.code === "Space" && this.#pressed.rotate)
+      (event.code === "KeyW" ||
+        event.code === "Space" ||
+        event.code === "ArrowUp") &&
+      this.#pressed.rotate
     )
       this.#pressed.rotate = false;
-    if (event.code === "KeyS" && this.#pressed.speedUp)
+    if (
+      (event.code === "KeyS" || event.code === "ArrowDown") &&
+      this.#pressed.speedUp
+    )
       this.#pressed.speedUp = false;
   }
 }
