@@ -1,59 +1,48 @@
 export default class SizeMananger {
-  static #boardWidth;
-  static #boardHeight;
+  #body;
+  #config;
 
-  static #nextBoxWidth;
-  static #nextBoxHeight;
+  #blockSize;
 
-  static #filedWidth;
-  static #filedHeight;
-
-  static #blockSize;
-
-  static get blockSize() {
-    return SizeMananger.#blockSize;
+  get blockSize() {
+    return this.#blockSize;
   }
 
-  static get fieldWidth() {
-    return SizeMananger.#filedWidth;
+  get fieldWidth() {
+    return this.#blockSize * this.#config.boardWidth;
   }
 
-  static get fieldHeight() {
-    return SizeMananger.#filedHeight;
+  get fieldHeight() {
+    return this.#blockSize * this.#config.boardHeight;
   }
 
-  static get nextBoxWidth() {
-    return SizeMananger.#nextBoxWidth;
+  get nextBoxWidth() {
+    return this.#blockSize * this.#config.nextBoxWidth;
   }
 
-  static get nextBoxHeight() {
-    return SizeMananger.#nextBoxHeight;
+  get nextBoxHeight() {
+    return this.#blockSize * this.#config.nextBoxHeight;
   }
 
-  static set(body, boardWidth, boardHeight, nextBoxWidth, nextBoxHeight) {
-    SizeMananger.#filedWidth = body.clientWidth;
-    SizeMananger.#filedHeight = body.clientHeight;
+  constructor(body, config) {
+    this.#body = body;
+    this.#config = config;
 
-    SizeMananger.#boardWidth = boardWidth;
-    SizeMananger.#boardHeight = boardHeight;
-
-    SizeMananger.#nextBoxWidth = nextBoxWidth;
-    SizeMananger.#nextBoxHeight = nextBoxHeight;
-
-    SizeMananger.#calculate();
+    this.#calculate();
   }
 
-  static #calculate() {
-    const widthMaxSize =
-      this.#filedWidth / (this.#boardWidth + this.#nextBoxWidth);
-    const heightMaxSize = this.#filedHeight / this.#boardHeight;
+  #calculate() {
+    const clientWidth = this.#body.clientWidth;
+    const clientHeight = this.#body.clientHeight;
 
-    this.#blockSize = Math.floor(Math.min(widthMaxSize, heightMaxSize));
+    const gameSpaceWidth = this.#config.boardWidth + this.#config.nextBoxWidth;
+    const gameSpaceHeight = this.#config.boardHeight;
 
-    SizeMananger.#filedWidth = this.#blockSize * this.#boardWidth;
-    SizeMananger.#filedHeight = this.#blockSize * this.#boardHeight;
+    const blockWidthMaxSize = clientWidth / gameSpaceWidth;
+    const blockHeightMaxSize = clientHeight / gameSpaceHeight;
 
-    SizeMananger.#nextBoxWidth = this.#blockSize * this.#nextBoxWidth;
-    SizeMananger.#nextBoxHeight = this.#blockSize * this.#nextBoxHeight;
+    this.#blockSize = Math.floor(
+      Math.min(blockWidthMaxSize, blockHeightMaxSize),
+    );
   }
 }

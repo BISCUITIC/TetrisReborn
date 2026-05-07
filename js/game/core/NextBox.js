@@ -20,6 +20,13 @@ export default class NextBox {
   }
 
   update(context) {
+    context.drawContext.clearRect(
+      0,
+      0,
+      context.sizeManager.fieldWidth,
+      context.sizeManager.fieldHeight,
+    );
+
     this.#realBodyNextTetramino.draw(context);
   }
 

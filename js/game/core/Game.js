@@ -50,6 +50,13 @@ export default class Game {
   }
 
   update(context) {
+    context.drawContext.clearRect(
+      0,
+      0,
+      context.sizeManager.fieldWidth,
+      context.sizeManager.fieldHeight,
+    );
+
     if (this.#keyCounter >= this.keySpeed) {
       this.#keyLogger();
       this.#keyCounter = 0;

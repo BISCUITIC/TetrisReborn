@@ -13,12 +13,12 @@ export default class Block {
   }
 
   draw(context) {
-    context.fillStyle = this.#colour;
-    context.fillRect(
-      this.#x * SizeMananger.blockSize,
-      this.#y * SizeMananger.blockSize,
-      SizeMananger.blockSize,
-      SizeMananger.blockSize,
+    context.drawContext.fillStyle = this.#colour;
+    context.drawContext.fillRect(
+      this.#x * context.sizeManager.blockSize,
+      this.#y * context.sizeManager.blockSize,
+      context.sizeManager.blockSize,
+      context.sizeManager.blockSize,
     );
   }
 }

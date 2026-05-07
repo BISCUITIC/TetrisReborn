@@ -9,6 +9,8 @@ export default class GameBootstrap {
 
   #runtime;
 
+  #sizeManager;
+
   static async create() {
     const game = new GameBootstrap();
 
@@ -53,14 +55,10 @@ export default class GameBootstrap {
     this.#runtime.eventBus.addEvent("placeTetramino", () => {
       this.#runtime.nextBox.next();
 
-      this.#contexts.nextBox.clearRect(
-        0,
-        0,
-        SizeMananger.nextBoxWidth,
-        SizeMananger.nextBoxHeight,
-      );
-
-      this.#runtime.nextBox.update(this.#contexts.nextBox);
+      this.#runtime.nextBox.update({
+        drawContext: this.#contexts.nextBox,
+        sizeManager: this.#sizeManager,
+      });
     });
 
     this.#runtime.eventBus.addEvent("deleteLine", (linesNumber) => {
@@ -73,32 +71,22 @@ export default class GameBootstrap {
   }
 
   #resize = () => {
-    SizeMananger.set(
-      this.#ui.gameElement,
-      this.#config.boardWidth,
-      this.#config.boardHeight,
-      this.#config.nextBoxWidth,
-      this.#config.nextBoxHeight,
-    );
+    this.#sizeManager = new SizeMananger(this.#ui.gameElement, this.#config);
 
-    this.#contexts.gameField.canvas.height = SizeMananger.fieldHeight;
-    this.#contexts.gameField.canvas.width = SizeMananger.fieldWidth;
+    this.#contexts.gameField.canvas.height = this.#sizeManager.fieldHeight;
+    this.#contexts.gameField.canvas.width = this.#sizeManager.fieldWidth;
 
-    this.#contexts.nextBox.canvas.height = SizeMananger.nextBoxHeight;
-    this.#contexts.nextBox.canvas.width = SizeMananger.nextBoxWidth;
+    this.#contexts.nextBox.canvas.height = this.#sizeManager.nextBoxHeight;
+    this.#contexts.nextBox.canvas.width = this.#sizeManager.nextBoxWidth;
   };
 
   loop = () => {
     if (this.#runtime.game.gameOver) return;
 
-    this.#contexts.gameField.clearRect(
-      0,
-      0,
-      SizeMananger.fieldWidth,
-      SizeMananger.fieldHeight,
-    );
-
-    this.#runtime.game.update(this.#contexts.gameField);
+    this.#runtime.game.update({
+      drawContext: this.#contexts.gameField,
+      sizeManager: this.#sizeManager,
+    });
 
     requestAnimationFrame(this.loop);
   };
