@@ -1,4 +1,4 @@
-import SizeMananger from "./Managers/SizeManager.js";
+import SizeMananger from "../infrastructure/SizeManager.js";
 
 export default class Block {
   #x;
