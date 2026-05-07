@@ -28,10 +28,10 @@ export default class SizeMananger {
     this.#body = body;
     this.#config = config;
 
-    this.#calculate();
+    this.update();
   }
 
-  #calculate() {
+  update() {
     const clientWidth = this.#body.clientWidth;
     const clientHeight = this.#body.clientHeight;
 

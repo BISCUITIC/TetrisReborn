@@ -44,6 +44,8 @@ export default class GameBootstrap {
 
     this.#runtime = GameFactory.create(this.#config, assets, this.#ui);
 
+    this.#sizeManager = new SizeMananger(this.#ui.gameElement, this.#config);
+
     this.#subscribeToEvents();
 
     this.#resize();
@@ -71,7 +73,7 @@ export default class GameBootstrap {
   }
 
   #resize = () => {
-    this.#sizeManager = new SizeMananger(this.#ui.gameElement, this.#config);
+    this.#sizeManager.update();
 
     this.#contexts.gameField.canvas.height = this.#sizeManager.fieldHeight;
     this.#contexts.gameField.canvas.width = this.#sizeManager.fieldWidth;
