@@ -5,6 +5,8 @@ namespace API;
 
 public class Program
 {
+    public const string Frontend = "Frontend";
+
     public static void Main(string[] args)
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -19,6 +21,17 @@ public class Program
         builder.AddRepositories();
         builder.AddServices();
 
+        builder.Services.AddCors(options => {
+            options.AddPolicy(Frontend, policy =>{
+                policy.WithOrigins(
+                        "http://localhost:5500",
+                        "http://127.0.0.1:5500"
+                    )
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+            });
+        });
+
         WebApplication app = builder.Build();
 
         app.UseStaticFiles();
@@ -29,6 +42,8 @@ public class Program
         {
             app.UseSwagger();
             app.UseSwaggerUI();
+
+            app.UseCors(Frontend);
         }
 
         app.UseAuthentication();
