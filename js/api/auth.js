@@ -1,29 +1,37 @@
-import request from "./client";
+import client from "./client.js";
 
-export const login = async (userName, password) => {
-  const result = await request("/auth/login", {
+export async function login(name, password) {
+  const LoginRequest = {
+    userName: name,
+    password: password,
+  };
+
+  const result = await client("/auth/login", {
     method: "POST",
-    body: JSON.stringify({ userName, password }),
+    body: JSON.stringify(LoginRequest),
   });
 
-  localStorage.setItem("token", result.token);
-};
+  return result;
+}
 
-export const register = async (userName, password) => {
-  await request("/auth/register", {
+export async function register(name, password) {
+  const RegisterRequest = {
+    userName: name,
+    password: password,
+  };
+
+  const result = await client("/auth/register", {
     method: "POST",
-    body: JSON.stringify({ userName, password }),
+    body: JSON.stringify(RegisterRequest),
   });
-};
 
-export const logout = () => {
-  localStorage.removeItem("token");
-};
+  return result;
+}
 
-export const getToken = () => {
-  return localStorage.getItem("token");
-};
+export async function me() {
+  const result = client("/auth/me", {
+    method: "GET",
+  });
 
-export const isAuthenticated = () => {
-  return !!getToken();
-};
+  return result;
+}

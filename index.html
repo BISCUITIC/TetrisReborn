@@ -27,6 +27,27 @@
       </div>
     </div>
 
+    <div id="auth" class="auth-overlay">
+      <div id="auth-tabs">
+        <button id="showLogin">Login</button>
+        <button id="showRegister">Register</button>
+      </div>
+
+      <form id="loginForm">
+        <input name="name" placeholder="Username" />
+        <input name="password" type="password" placeholder="Password" />
+        <button type="submit">Login</button>
+      </form>
+
+      <form id="registerForm" class="hidden">
+        <input name="name" placeholder="Username" />
+        <input name="password" type="password" placeholder="Password" />
+        <button type="submit">Register</button>
+      </form>
+
+      <div id="authError"></div>
+    </div>
+
     <script type="module" src="./js/main.js"></script>
   </body>
 </html>
