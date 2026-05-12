@@ -6,7 +6,7 @@ import {
 
 class AuthManager {
   #tokenKey = "token";
-  #userIdKey = "id";
+  #userIdKey = "userId";
 
   #setToken(token) {
     localStorage.setItem(this.#tokenKey, token);
@@ -19,17 +19,15 @@ class AuthManager {
   async init() {
     const token = this.getToken();
 
-    if (token) {
-      try {
-        const user = await this.Me();
-        return user;
-      } catch {
-        this.logout();
-        return null;
-      }
-      window.dispatchEvent(new Event("auth:ready"));
-    } else {
-      window.dispatchEvent(new Event("auth:ready"));
+    if (!token) {
+      return null;
+    }
+
+    try {
+      const user = await this.Me();
+      return user;
+    } catch {
+      this.logout();
       return null;
     }
   }

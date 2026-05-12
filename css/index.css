@@ -35,30 +35,20 @@ body {
   gap: 10px;
 }
 
+#authPanel {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+#authButton {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
 .score-info {
   display: flex;
   justify-content: space-between;
-}
-
-.hidden {
-  display: none !important;
-}
-
-.auth-overlay {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-
-  padding: 20px;
-  background: rgba(0, 0, 0, 0.8);
-  border-radius: 12px;
-
-  z-index: 1000;
 }
 
 canvas {

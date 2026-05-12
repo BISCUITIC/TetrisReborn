@@ -2,38 +2,31 @@ import AuthManager from "./AuthManager.js";
 
 class AuthUI {
   constructor() {
-    this.auth = document.getElementById("auth");
+    this.button = document.getElementById("authButton");
 
-    this.syncInitialState();
-
-    this.bindEvents();
+    this.render();
+    this.bind();
   }
 
-  bindEvents() {
-    window.addEventListener("auth:login", () => {
-      this.hide();
+  bind() {
+    this.button.addEventListener("click", () => {
+      if (AuthManager.isAuthenticated()) {
+        AuthManager.logout();
+      } else {
+        window.location.href = "/login.html";
+      }
     });
 
-    window.addEventListener("auth:logout", () => {
-      this.show();
-    });
+    window.addEventListener("auth:login", () => this.render());
+    window.addEventListener("auth:logout", () => this.render());
   }
 
-  syncInitialState() {
+  render() {
     if (AuthManager.isAuthenticated()) {
-      this.hide();
+      this.button.textContent = "Logout";
     } else {
-      this.show();
+      this.button.textContent = "Login";
     }
-  }
-
-  show() {
-    this.auth.classList.remove("hidden");
-  }
-
-  hide() {
-    console.log("ADS");
-    this.auth.classList.add("hidden");
   }
 }
 
