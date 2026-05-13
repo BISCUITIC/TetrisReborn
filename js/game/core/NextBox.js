@@ -1,5 +1,5 @@
 import Tetramino from "./Tetramino.js";
-
+import EventBus from "../../infrastructure/EventBus.js";
 export default class NextBox {
   #tetraminoManager;
   #realBodyNextTetramino;
@@ -7,16 +7,30 @@ export default class NextBox {
   #width;
   #height;
 
+  #context;
+
   next() {
     this.#countPosition(this.#tetraminoManager.first);
   }
 
-  constructor(tetraminoManager, width, height) {
+  constructor(tetraminoManager, width, height, context) {
     this.#tetraminoManager = tetraminoManager;
-    this.next();
 
     this.#width = width;
     this.#height = height;
+
+    this.#context = context;
+
+    this.next();
+
+    this.#bindEvents();
+  }
+
+  #bindEvents() {
+    EventBus.addEvent("game:placeTetramino", () => {
+      this.next();
+      this.update(this.#context);
+    });
   }
 
   update(context) {

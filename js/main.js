@@ -1,4 +1,4 @@
-import GameBootstrap from "./game/infrastructure/GameBoostrap.js";
+import GameBootstrap from "./game/infrastructure/GameBootstrap.js";
 import AuthUI from "./auth/AuthUI.js";
 import ScoreUI from "./score/ScoreUI.js";
 

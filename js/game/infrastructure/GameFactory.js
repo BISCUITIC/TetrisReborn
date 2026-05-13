@@ -8,7 +8,7 @@ import Game from "../core/Game.js";
 import Bag from "../core/Bag.js";
 
 export default class GameFactory {
-  static create(config, assets, ui) {
+  static create(config, assets, ui, contexts, sizeManager) {
     const tetraminoManager = new TetraminoManager(
       new Bag(assets.tetraminos),
       new Bag(assets.colours),
@@ -26,6 +26,10 @@ export default class GameFactory {
       tetraminoManager,
       config.nextBoxWidth,
       config.nextBoxHeight,
+      {
+        drawContext: contexts.nextBox,
+        sizeManager: sizeManager,
+      },
     );
 
     const game = new Game(board, tetraminoManager, keyboardManager, EventBus);

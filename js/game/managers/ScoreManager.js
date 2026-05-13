@@ -17,9 +17,21 @@ export default class ScoreManager {
       score: this.#score,
       bestScore: this.#bestScore,
     });
+
+    this.#bindEvents();
   }
 
-  update(linesNumber) {
+  #bindEvents() {
+    EventBus.addEvent("game:deleteLine", (linesNumber) => {
+      this.#update(linesNumber);
+    });
+
+    EventBus.addEvent("game:gameOver", () => {
+      this.#finish();
+    });
+  }
+
+  #update(linesNumber) {
     this.#score += this.#points[linesNumber];
 
     this.#emit("score:ui:update", {
@@ -28,7 +40,7 @@ export default class ScoreManager {
     });
   }
 
-  finish() {
+  #finish() {
     if (this.#score <= this.#bestScore) return;
 
     this.#bestScore = this.#score;
