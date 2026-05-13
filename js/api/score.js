@@ -11,7 +11,7 @@ export async function getLeaderboard() {
 export async function createScore(newScore) {
   const createScoreRequest = { Value: newScore };
 
-  const result = await client("/scores/", {
+  const result = await client("/scores", {
     method: "POST",
     body: JSON.stringify(createScoreRequest),
   });

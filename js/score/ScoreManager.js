@@ -6,29 +6,32 @@ import {
 import EventBus from "../infrastructure/EventBus.js";
 
 class ScoreManager {
-  async init() {
-    const result = await this.getLeaderboard();
-
-    return result;
+  constructor() {
+    this.#bindEvents();
+    this.#loadLeaderboard();
   }
 
-  async getLeaderboard() {
+  #bindEvents() {
+    EventBus.addEvent("score:create", (payload) => {
+      this.submitScore(payload.value);
+    });
+  }
+
+  #loadLeaderboard() {
     const resultPromise = apiGetLeaderboard();
 
     resultPromise.then((result) => {
       this.#emit("score:leaderboard", result);
     });
-
-    return resultPromise;
   }
 
-  async submitScore(scsore) {
-    const result = await apiCreateScore(scsore);
+  async submitScore(score) {
+    const result = await apiCreateScore(score);
 
     this.#emit("score:created", result);
 
     if (result.success) {
-      await this.loadLeaderboard();
+      this.#loadLeaderboard();
     }
 
     return result;

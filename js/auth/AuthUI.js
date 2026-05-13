@@ -1,3 +1,4 @@
+import EventBus from "../infrastructure/EventBus.js";
 import AuthManager from "./AuthManager.js";
 
 class AuthUI {
@@ -17,8 +18,8 @@ class AuthUI {
       }
     });
 
-    window.addEventListener("auth:login", () => this.render());
-    window.addEventListener("auth:logout", () => this.render());
+    EventBus.addEvent("auth:login", () => this.render());
+    EventBus.addEvent("auth:logout", () => this.render());
   }
 
   render() {

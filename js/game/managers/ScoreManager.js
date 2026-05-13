@@ -50,6 +50,10 @@ export default class ScoreManager {
       score: this.#score,
       bestScore: this.#bestScore,
     });
+
+    this.#emit("score:create", {
+      value: this.#bestScore,
+    });
   }
 
   #getBestScore() {

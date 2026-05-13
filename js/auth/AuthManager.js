@@ -3,6 +3,7 @@ import {
   register as apiRegister,
   me as apiMe,
 } from "../api/auth.js";
+import EventBus from "../infrastructure/EventBus.js";
 
 class AuthManager {
   #tokenKey = "token";
@@ -31,17 +32,10 @@ class AuthManager {
 
   async init() {
     const token = this.getToken();
-    if (!token)
-      return {
-        success: false,
-        status: 401,
-        error: "Unauthorized",
-      };
+    if (!token) return;
 
     const result = await this.me();
     if (!result.success) this.logout();
-
-    return result;
   }
 
   async me() {
@@ -82,11 +76,11 @@ class AuthManager {
 
     this.#clear();
 
-    if (!wasAuthenticated) this.#emit("auth:logout");
+    if (wasAuthenticated) this.#emit("auth:logout");
   }
 
   #emit(event) {
-    window.dispatchEvent(new Event(event));
+    EventBus.call(event);
   }
 }
 
