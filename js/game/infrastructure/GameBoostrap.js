@@ -1,7 +1,7 @@
 import AssetsLoader from "./AssetLoader.js";
 import GameFactory from "./GameFactory.js";
 import SizeMananger from "./SizeManager.js";
-
+import EventBus from "../../infrastructure/EventBus.js";
 export default class GameBootstrap {
   #contexts;
   #config;
@@ -37,8 +37,6 @@ export default class GameBootstrap {
     };
 
     this.#ui = {
-      scoreElement: document.getElementById("score"),
-      bestScoreElement: document.getElementById("best-score"),
       gameElement: document.getElementById("game"),
     };
 
@@ -46,15 +44,15 @@ export default class GameBootstrap {
 
     this.#sizeManager = new SizeMananger(this.#ui.gameElement, this.#config);
 
-    this.#subscribeToEvents();
+    this.#bindEvents();
 
     this.#resize();
   }
 
-  #subscribeToEvents() {
+  #bindEvents() {
     window.addEventListener("resize", this.#resize);
 
-    this.#runtime.eventBus.addEvent("placeTetramino", () => {
+    EventBus.addEvent("game:placeTetramino", () => {
       this.#runtime.nextBox.next();
 
       this.#runtime.nextBox.update({
@@ -63,12 +61,12 @@ export default class GameBootstrap {
       });
     });
 
-    this.#runtime.eventBus.addEvent("deleteLine", (linesNumber) => {
+    EventBus.addEvent("game:deleteLine", (linesNumber) => {
       this.#runtime.scoreManager.update(linesNumber);
     });
 
-    this.#runtime.eventBus.addEvent("gameOver", () => {
-      this.#runtime.scoreManager.save();
+    EventBus.addEvent("game:gameOver", () => {
+      this.#runtime.scoreManager.finish();
     });
   }
 

@@ -1,4 +1,4 @@
-export default class EventBus {
+class EventBus {
   #listeners;
 
   constructor() {
@@ -29,3 +29,5 @@ export default class EventBus {
     });
   }
 }
+
+export default new EventBus();

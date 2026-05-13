@@ -1,4 +1,4 @@
-import EventBus from "./EventBus.js";
+import EventBus from "../../infrastructure/EventBus.js";
 import KeyboardManager from "../managers/KeyboardManager.js";
 import ScoreManager from "../managers/ScoreManager.js";
 import TetraminoManager from "../managers/TetraminoManager.js";
@@ -6,10 +6,9 @@ import Board from "../core/Board.js";
 import NextBox from "../core/NextBox.js";
 import Game from "../core/Game.js";
 import Bag from "../core/Bag.js";
+
 export default class GameFactory {
   static create(config, assets, ui) {
-    const eventBus = new EventBus();
-
     const tetraminoManager = new TetraminoManager(
       new Bag(assets.tetraminos),
       new Bag(assets.colours),
@@ -19,11 +18,7 @@ export default class GameFactory {
 
     const keyboardManager = new KeyboardManager();
 
-    const scoreManager = new ScoreManager(
-      assets.points,
-      ui.scoreElement,
-      ui.bestScoreElement,
-    );
+    const scoreManager = new ScoreManager(assets.points);
 
     const board = new Board(config.boardWidth, config.boardHeight);
 
@@ -33,7 +28,7 @@ export default class GameFactory {
       config.nextBoxHeight,
     );
 
-    const game = new Game(board, tetraminoManager, keyboardManager, eventBus);
+    const game = new Game(board, tetraminoManager, keyboardManager, EventBus);
 
     return {
       game,
@@ -42,7 +37,6 @@ export default class GameFactory {
       keyboardManager,
       tetraminoManager,
       board,
-      eventBus,
     };
   }
 }

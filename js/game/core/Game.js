@@ -1,4 +1,5 @@
 import Tetramino from "./Tetramino.js";
+import EventBus from "../../infrastructure/EventBus.js";
 
 export default class Game {
   static defaultSpeed = 30;
@@ -7,8 +8,6 @@ export default class Game {
 
   #keyManager;
   #tetraminoManager;
-
-  #eventBus;
 
   #board;
   #tetramino;
@@ -31,15 +30,13 @@ export default class Game {
     return Game.keySpeed;
   }
 
-  constructor(board, tetraminoManager, keyboardManager, eventBus) {
+  constructor(board, tetraminoManager, keyboardManager) {
     this.#tetraminoManager = tetraminoManager;
     this.#keyManager = keyboardManager;
 
-    this.#eventBus = eventBus;
-
     this.#board = board;
     this.#tetramino = this.#tetraminoManager.next;
-    this.#eventBus.call("placeTetramino");
+    EventBus.call("game:placeTetramino");
 
     this.#frameCounter = 0;
     this.#keyCounter = 0;
@@ -65,7 +62,7 @@ export default class Game {
     if (this.#frameCounter >= this.gameSpeed) {
       this.#gravity();
       let linesNumber = this.#board.update();
-      if (linesNumber) this.#eventBus.call("deleteLine", linesNumber);
+      if (linesNumber) EventBus.call("game:deleteLine", linesNumber);
       this.#frameCounter = 0;
     }
 
@@ -116,11 +113,11 @@ export default class Game {
     } else {
       this.#placeTetramino();
       this.#tetramino = this.#tetraminoManager.next;
-      this.#eventBus.call("placeTetramino");
+      EventBus.call("game:placeTetramino");
 
       if (!this.#hasNoCollision(0, 0, this.#tetramino)) {
         this.#gameOver = true;
-        this.#eventBus.call("gameOver");
+        EventBus.call("game:gameOver");
       }
     }
   }

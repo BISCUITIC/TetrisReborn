@@ -1,47 +1,54 @@
+import EventBus from "../../infrastructure/EventBus.js";
+
 export default class ScoreManager {
+  #bestScoreKey = "bestScore";
+
   #points;
   #score;
   #bestScore;
 
-  #scoreUI;
-  #bestScoreUI;
-
-  constructor(points, scoreUI, bestScoreUI) {
+  constructor(points) {
     this.#points = points;
 
-    this.#scoreUI = scoreUI;
-    this.#bestScoreUI = bestScoreUI;
+    this.#score = 0;
+    this.#bestScore = this.#getBestScore();
 
-    this.#init();
+    this.#emit("score:ui:update", {
+      score: this.#score,
+      bestScore: this.#bestScore,
+    });
   }
 
   update(linesNumber) {
     this.#score += this.#points[linesNumber];
-    this.save();
 
-    this.#render();
+    this.#emit("score:ui:update", {
+      score: this.#score,
+      bestScore: this.#bestScore,
+    });
   }
 
-  save() {
+  finish() {
     if (this.#score <= this.#bestScore) return;
 
     this.#bestScore = this.#score;
-    localStorage.setItem("bestScore", this.#bestScore);
+    this.#setBestScore(this.#bestScore);
 
-    this.#render();
+    this.#emit("score:ui:update", {
+      score: this.#score,
+      bestScore: this.#bestScore,
+    });
   }
 
-  #init() {
-    this.#score = 0;
-    this.#bestScore = Number(localStorage.getItem("bestScore")) || 0;
-
-    console.log(this.#bestScore);
-
-    this.#render();
+  #getBestScore() {
+    return Number(localStorage.getItem(this.#bestScoreKey)) || 0;
   }
 
-  #render() {
-    this.#scoreUI.textContent = this.#score.toString().padStart(5, "0");
-    this.#bestScoreUI.textContent = this.#bestScore.toString().padStart(5, "0");
+  #setBestScore() {
+    localStorage.setItem(this.#bestScoreKey, this.#bestScore);
+  }
+
+  #emit(event, payload) {
+    EventBus.call(event, payload);
   }
 }

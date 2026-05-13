@@ -1,28 +1,28 @@
 import client from "./client.js";
 
 export async function login(name, password) {
-  const LoginRequest = {
+  const loginRequest = {
     userName: name,
     password: password,
   };
 
   const result = await client("/auth/login", {
     method: "POST",
-    body: JSON.stringify(LoginRequest),
+    body: JSON.stringify(loginRequest),
   });
 
   return result;
 }
 
 export async function register(name, password) {
-  const RegisterRequest = {
+  const registerRequest = {
     userName: name,
     password: password,
   };
 
   const result = await client("/auth/register", {
     method: "POST",
-    body: JSON.stringify(RegisterRequest),
+    body: JSON.stringify(registerRequest),
   });
 
   return result;

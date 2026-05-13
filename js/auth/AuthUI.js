@@ -1,15 +1,15 @@
 import AuthManager from "./AuthManager.js";
 
 class AuthUI {
-  constructor() {
-    this.button = document.getElementById("authButton");
+  #authButton = document.getElementById("authButton");
 
+  constructor() {
     this.render();
-    this.bind();
+    this.bindEvents();
   }
 
-  bind() {
-    this.button.addEventListener("click", () => {
+  bindEvents() {
+    this.#authButton.addEventListener("click", () => {
       if (AuthManager.isAuthenticated()) {
         AuthManager.logout();
       } else {
@@ -23,9 +23,9 @@ class AuthUI {
 
   render() {
     if (AuthManager.isAuthenticated()) {
-      this.button.textContent = "Logout";
+      this.#authButton.textContent = "Logout";
     } else {
-      this.button.textContent = "Login";
+      this.#authButton.textContent = "Login";
     }
   }
 }
