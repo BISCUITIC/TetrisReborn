@@ -1,5 +1,6 @@
 using API.Endpoints;
 using API.Extensions;
+using API.Extensions.WebApplicationBuilderExtensions;
 
 namespace API;
 
@@ -10,14 +11,11 @@ public class Program
     public static void Main(string[] args)
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-
         builder.AddDatabase();
         builder.AddIdentity();
-
         builder.AddJwtSwaggerGen();
         builder.AddJwt();
         builder.AddJwtAuthentication();
-
         builder.AddRepositories();
         builder.AddServices();
 

@@ -1,5 +1,6 @@
 ﻿using API.Contracts.Score;
 using API.Extensions;
+using API.Extensions.ClaimsPrincipalExtensions;
 using Application;
 using CSharpFunctionalExtensions;
 using Domain.Entities;

@@ -1,8 +1,8 @@
 ﻿using System.Security.Claims;
 
-namespace API.Extensions;
+namespace API.Extensions.ClaimsPrincipalExtensions;
 
-public static class ClaimsPrincipalExtensions
+public static class UserIdExtension
 {
     public static bool TryGetUserId(this ClaimsPrincipal user, out Guid userId)
     {
