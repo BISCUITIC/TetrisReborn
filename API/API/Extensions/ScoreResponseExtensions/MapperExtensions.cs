@@ -1,9 +1,9 @@
 ﻿using API.Contracts.Score;
 using Domain.Entities;
 
-namespace API.Extensions;
+namespace API.Extensions.ScoreResponseExtensions;
 
-public static class ScoreExtensions
+public static class MapperExtensions
 {
     public static ScoreResponse ToScoreResponse(this Score score)
     {
