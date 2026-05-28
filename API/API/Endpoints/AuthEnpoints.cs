@@ -29,7 +29,7 @@ public static class AuthEnpoints
         IdentityResult result = await userManager.CreateAsync(user, request.Password);
 
         if (!result.Succeeded)                  
-            return AuthProblems.RegisterValidation(result.Errors);       
+            return AuthProblems.RegistrationValidation(result.Errors);       
 
         return Results.Ok(new { user.Id });
     }
@@ -56,7 +56,7 @@ public static class AuthEnpoints
         string? id = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
         if (id is null)
-            return Results.Unauthorized();
+            return AuthProblems.MeUnauthorized();
 
         return Results.Ok(new { id });
     }

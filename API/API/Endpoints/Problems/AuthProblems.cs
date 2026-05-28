@@ -16,7 +16,7 @@ public static class AuthProblems
         );
     }
 
-    public static IResult RegisterValidation(IEnumerable<IdentityError> errors)
+    public static IResult RegistrationValidation(IEnumerable<IdentityError> errors)
     {
         Dictionary<string, string[]> validationErrors =
             errors.GroupBy(error => error.Code)
@@ -29,6 +29,16 @@ public static class AuthProblems
             type: AuthProblemTypes.RegistrationValidationFailed,
             title: "Registration validation failed",
             errors: validationErrors,            
+            statusCode: StatusCodes.Status400BadRequest
+        );
+    }
+
+    public static IResult MeUnauthorized()
+    {
+        return Results.Problem(
+            type: AuthProblemTypes.MeUnauthorized,
+            title: "Unauthorized",
+            detail: "User is not authenticated or token is missing",
             statusCode: StatusCodes.Status401Unauthorized
         );
     }
