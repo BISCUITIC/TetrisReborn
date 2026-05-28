@@ -1,36 +1,31 @@
+using API.Constants;
 using API.Endpoints;
-using API.Extensions;
 using API.Extensions.WebApplicationBuilderExtensions;
 
 namespace API;
 
 public class Program
 {
-    public const string Frontend = "Frontend";
-
     public static void Main(string[] args)
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
         builder.AddDatabase();
         builder.AddIdentity();
-        builder.AddJwtSwaggerGen();
+
         builder.AddJwt();
+        builder.AddJwtSwaggerGen();
         builder.AddJwtAuthentication();
+
         builder.AddRepositories();
         builder.AddServices();
 
-        builder.Services.AddCors(options => {
-            options.AddPolicy(Frontend, policy =>{
-                policy.WithOrigins(
-                        "http://localhost:5500",
-                        "http://127.0.0.1:5500"
-                    )
-                    .AllowAnyHeader()
-                    .AllowAnyMethod();
-            });
-        });
+        builder.AddCors();
+        builder.AddProblemDetails();
 
         WebApplication app = builder.Build();
+
+        app.UseStatusCodePages();
 
         app.UseStaticFiles();
 
@@ -41,7 +36,7 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI();
 
-            app.UseCors(Frontend);
+            app.UseCors(CorsPolicyNames.WebApplication);
         }
 
         app.UseAuthentication();

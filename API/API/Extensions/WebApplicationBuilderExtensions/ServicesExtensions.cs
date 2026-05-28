@@ -6,6 +6,6 @@ internal static class ServicesExtensions
 {
     public static void AddServices(this WebApplicationBuilder builder)
     {
-        builder.Services.AddScoped<ScoreService>();
+        builder.Services.AddScoped<ScoreService>();        
     }
 }
