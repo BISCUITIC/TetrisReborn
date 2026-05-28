@@ -2,7 +2,7 @@
 
 namespace API.Extensions.ClaimsPrincipalExtensions;
 
-public static class UserIdExtension
+public static class UserIdExtensions
 {
     public static bool TryGetUserId(this ClaimsPrincipal user, out Guid userId)
     {
