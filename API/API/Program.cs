@@ -25,6 +25,8 @@ public class Program
 
         WebApplication app = builder.Build();
 
+        app.UseExceptionHandler();
+
         app.UseStatusCodePages();
 
         app.UseStaticFiles();

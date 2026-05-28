@@ -1,4 +1,5 @@
 ﻿using API.Contracts.Auth;
+using API.Endpoints.Problems;
 using Infrastructure.Identity;
 using Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -27,8 +28,8 @@ public static class AuthEnpoints
 
         IdentityResult result = await userManager.CreateAsync(user, request.Password);
 
-        if (!result.Succeeded)        
-            return Results.BadRequest(result.Errors);
+        if (!result.Succeeded)                  
+            return AuthProblems.RegisterValidation(result.Errors);       
 
         return Results.Ok(new { user.Id });
     }
@@ -37,14 +38,13 @@ public static class AuthEnpoints
                                              UserManager<ApplicationUser> userManager,
                                              IJwtProvider jwtProvider)
     {
-        ApplicationUser? user = await userManager.FindByNameAsync(request.UserName);
-        if (user is null)        
-            return Results.Unauthorized();        
+        ApplicationUser? user = await userManager.FindByNameAsync(request.UserName);        
+        if (user is null)
+            return AuthProblems.AuthenticationFailed();
 
         bool isPasswordValid = await userManager.CheckPasswordAsync(user, request.Password);
-        if (!isPasswordValid)        
-            return Results.Unauthorized();
-        
+        if (!isPasswordValid)
+            return AuthProblems.AuthenticationFailed();
 
         string token = jwtProvider.GenerateToken(user);
 
