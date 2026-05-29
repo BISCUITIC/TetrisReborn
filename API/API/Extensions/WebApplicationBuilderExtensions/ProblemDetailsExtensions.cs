@@ -8,16 +8,7 @@ public static class ProblemDetailsExtensions
         {
             options.CustomizeProblemDetails = context =>
             {                
-                context.ProblemDetails.Extensions["timestamp"] = DateTime.UtcNow;
-
-                if (context.ProblemDetails is HttpValidationProblemDetails)
-                {
-                    context.ProblemDetails.Type =
-                        "validation/request-invalid";
-
-                    context.ProblemDetails.Title =
-                        "Request validation failed";
-                }
+                context.ProblemDetails.Extensions["timestamp"] = DateTime.UtcNow;               
             };            
         });
     }

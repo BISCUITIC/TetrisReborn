@@ -4,6 +4,7 @@ using Infrastructure.Identity;
 using Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+using API.Filters;
 
 namespace API.Endpoints;
 
@@ -13,18 +14,19 @@ public static class AuthEnpoints
     {
         RouteGroupBuilder auth = app.MapGroup("/auth");
 
-        auth.MapPost("/register", Register);
-        auth.MapPost("/login", Login);
+        auth.MapPost("/register", Register)
+            .AddEndpointFilter<ValidationFilter<RegisterRequest>>();
+
+        auth.MapPost("/login", Login)
+            .AddEndpointFilter<ValidationFilter<LoginRequest>>();
+
         auth.MapGet("/me", Me).RequireAuthorization();
     }
 
     private static async Task<IResult> Register(RegisterRequest request,
                                                 UserManager<ApplicationUser> userManager)
     {
-        ApplicationUser user = new ApplicationUser()
-        {
-            UserName = request.UserName
-        };
+        ApplicationUser user = new ApplicationUser() { UserName = request.UserName };
 
         IdentityResult result = await userManager.CreateAsync(user, request.Password);
 

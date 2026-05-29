@@ -1,13 +1,16 @@
 using API.Constants;
 using API.Endpoints;
 using API.Extensions.WebApplicationBuilderExtensions;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using API.Contracts.Auth.Validation;
 
 namespace API;
 
 public class Program
 {
     public static void Main(string[] args)
-    {
+    {        
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
         builder.AddDatabase();
@@ -22,6 +25,8 @@ public class Program
 
         builder.AddCors();
         builder.AddProblemDetails();
+        builder.Services.AddFluentValidationAutoValidation();
+        builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
         WebApplication app = builder.Build();
 
