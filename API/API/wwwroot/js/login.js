@@ -1,4 +1,5 @@
 import AuthManager from "./auth/AuthManager.js";
+import { ERROR_CODES } from "./api/client.js";
 
 const form = document.getElementById("loginForm");
 const errorBox = document.getElementById("error");
@@ -14,16 +15,12 @@ form.addEventListener("submit", async (e) => {
   if (result.success) {
     window.location.href = "/index.html";
   } else {
-    errorBox.textContent = getErrorMessage(result);
+    switch (result.code) {
+      case ERROR_CODES.NETWORK_ERROR:
+        errorBox.textContent = "Server is unavailable";
+        break;
+      default:
+        errorBox.textContent = result.error;
+    }
   }
 });
-
-function getErrorMessage(result) {
-  if (result.detail) return result.detail;
-
-  const firstKey = Object.keys(result.errors)[0];
-
-  if (!firstKey) return "Unknown error";
-
-  return result.errors[firstKey][0];
-}

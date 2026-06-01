@@ -1,5 +1,4 @@
 ﻿using API.Constants;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 
 namespace API.Endpoints.Problems;
@@ -28,7 +27,7 @@ public static class AuthProblems
         return Results.ValidationProblem(
             type: AuthProblemTypes.RegistrationValidationFailed,
             title: "Registration validation failed",
-            errors: validationErrors,            
+            errors: validationErrors,
             statusCode: StatusCodes.Status400BadRequest
         );
     }

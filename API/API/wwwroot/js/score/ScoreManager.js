@@ -1,4 +1,4 @@
-import { ERROR_TYPES } from "../api/client.js";
+import { ERROR_CODES } from "../api/client.js";
 import {
   getLeaderboard as apiGetLeaderboard,
   createScore as apiCreateScore,

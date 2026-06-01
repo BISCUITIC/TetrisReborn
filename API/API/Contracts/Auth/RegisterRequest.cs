@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace API.Contracts.Auth;
+﻿namespace API.Contracts.Auth;
 
 public sealed record class RegisterRequest
 (

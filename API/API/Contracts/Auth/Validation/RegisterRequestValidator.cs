@@ -10,7 +10,7 @@ public class RegisterRequestValidator : AbstractValidator<RegisterRequest>
             .NotEmpty()
                 .WithMessage("Username is required")
             .MinimumLength(3)
-                .WithMessage("username must be at least 3 characters long")
+                .WithMessage("Username must be at least 3 characters long")
             .MaximumLength(128)
                 .WithMessage("Username must not exceed 128 characters");
 

@@ -2,16 +2,16 @@ import AuthManager from "../auth/AuthManager.js";
 
 const BASE_URL = "https://localhost:7196";
 
-function setResult(success, status, error = null, data = null, code = null) {
-  return { success, status, error, data, code };
+function setResult(success, type, detail = null, errors = null, data = null) {
+  return { success, type, detail, errors, data };
 }
 
-export const ERROR_CODES = {
-  NETWORK_ERROR: "NETWORK_ERROR",
-  UNAUTHORIZED: "UNAUTHORIZED",
-  INVALID_CREDENTIALS: "INVALID_CREDENTIALS",
-  VALIDATION: "VALIDATION_ERROR",
-  SERVER_ERROR: "SERVER_ERROR",
+export const ERROR_TYPES = {
+  INVALID_CREDENTIALS: "auth/invalid-credentials",
+  REGISTRATION_VALIDATION_FAILED: "auth/register/validation-failed",
+  ME_UNAUTHORIZED: "auth/me/unauthorized",
+  REQUEST_INVALID: "validation/request-invalid",
+  CONNECTION_FAILED: "server/connection-failed",
 };
 
 export default async function client(url = "/", options = {}) {
@@ -28,36 +28,26 @@ export default async function client(url = "/", options = {}) {
       ...options,
     });
 
-    if (response.status === 401) {
-      AuthManager.logout();
-      return setResult(
-        false,
-        response.status,
-        "Unauthorized",
-        null,
-        ERROR_CODES.UNAUTHORIZED,
-      );
-    }
+    const payload = await response.json();
 
     if (!response.ok) {
       return setResult(
         false,
-        response.status,
-        data?.title || "Request failed",
+        payload.type,
+        payload.detail,
+        payload.errors,
         null,
-        ERROR_CODES.REQUEST_ERROR,
       );
+    } else {
+      return setResult(true, null, null, null, payload);
     }
-
-    const data = await response.json();
-    return setResult(true, response.status, null, data);
   } catch {
     return setResult(
       false,
-      0,
+      ERROR_TYPES.CONNECTION_FAILED,
       "Unable to connect to server",
       null,
-      ERROR_CODES.NETWORK_ERROR,
+      null,
     );
   }
 }

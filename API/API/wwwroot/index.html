@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Tetris</title>
+    <link rel="stylesheet" href="./css/index.css" />
+  </head>
+
+  <body>
+    <div id="authPanel">
+      <button id="authButton">Login</button>
+    </div>
+
+    <div id="layout">
+      <!-- LEADERBOARD -->
+      <div id="leaderboard">
+        <h2>Leaderboard</h2>
+
+        <div id="leaderboard-loading">Loading...</div>
+
+        <div id="leaderboard-error"></div>
+
+        <ol id="leaderboard-list"></ol>
+      </div>
+    </div>
+
+    <!-- GAME -->
+    <div id="game">
+      <canvas id="field"></canvas>
+
+      <div id="sideBar">
+        <canvas id="nextBox"></canvas>
+
+        <div class="info">
+          <div class="score-info">
+            Score
+            <span id="score">0</span>
+          </div>
+
+          <div class="score-info">
+            Best score
+            <span id="best-score">0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="./js/main.js"></script>
+  </body>
+</html>
