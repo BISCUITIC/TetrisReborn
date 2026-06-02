@@ -2,7 +2,7 @@ import EventBus from "../infrastructure/EventBus.js";
 import AuthManager from "./AuthManager.js";
 
 class AuthUI {
-  #authButton = document.getElementById("authButton");
+  #authButton = document.getElementById("auth-button");
 
   constructor() {
     this.render();

@@ -27,7 +27,7 @@ export default class GameBootstrap {
 
     this.#contexts = {
       gameField: document.getElementById("field").getContext("2d"),
-      nextBox: document.getElementById("nextBox").getContext("2d"),
+      nextBox: document.getElementById("next-box").getContext("2d"),
     };
 
     this.#config = {
@@ -55,7 +55,7 @@ export default class GameBootstrap {
 
     this.#resize();
 
-    EventBus.call("game:init");
+    this.#emit("game:init");
   }
 
   #bindEvents() {
@@ -71,6 +71,10 @@ export default class GameBootstrap {
     this.#contexts.nextBox.canvas.height = this.#sizeManager.nextBoxHeight;
     this.#contexts.nextBox.canvas.width = this.#sizeManager.nextBoxWidth;
   };
+
+  #emit(event, payload) {
+    EventBus.call(event, payload);
+  }
 
   loop = () => {
     if (this.#runtime.game.gameOver) return;
