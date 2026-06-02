@@ -1,9 +1,9 @@
 export default class AssetsLoader {
   static async load() {
     const [tetraminos, colours, points] = await Promise.all([
-      AssetsLoader.#loadJson("./js/game/assets/tetraminos.json"),
-      AssetsLoader.#loadJson("./js/game/assets/colours.json"),
-      AssetsLoader.#loadJson("./js/game/assets/points.json"),
+      AssetsLoader.#loadJson("/WebApplication/js/game/assets/tetraminos.json"),
+      AssetsLoader.#loadJson("/WebApplication/js/game/assets/colours.json"),
+      AssetsLoader.#loadJson("/WebApplication/js/game/assets/points.json"),
     ]);
 
     return {
