@@ -31,6 +31,11 @@ export default class NextBox {
       this.next();
       this.update(this.#context);
     });
+
+    EventBus.addEvent("game:init", () => {
+      this.next();
+      this.update(this.#context);
+    });
   }
 
   update(context) {

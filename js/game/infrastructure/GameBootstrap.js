@@ -54,6 +54,8 @@ export default class GameBootstrap {
     this.#bindEvents();
 
     this.#resize();
+
+    EventBus.call("game:init");
   }
 
   #bindEvents() {
