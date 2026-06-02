@@ -21,6 +21,24 @@ export default class KeyboardManager {
     return result;
   }
 
+  clear() {
+    this.#pressed = {
+      left: false,
+      right: false,
+      speedUp: false,
+      rotate: false,
+    };
+
+    this.#clicked = {
+      left: false,
+      right: false,
+      rotate: false,
+      speedUp: false,
+    };
+
+    console.log("ASDASDASDASDASD");
+  }
+
   constructor() {
     document.addEventListener("keydown", (event) => this.#keyDown(event));
     document.addEventListener("keyup", (event) => this.#keyUp(event));

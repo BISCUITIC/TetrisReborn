@@ -2,6 +2,7 @@ import AssetsLoader from "./AssetLoader.js";
 import GameFactory from "./GameFactory.js";
 import SizeMananger from "./SizeManager.js";
 import EventBus from "../../infrastructure/EventBus.js";
+import GameUI from "../ui/GameUI.js";
 
 export default class GameBootstrap {
   #contexts;
@@ -11,6 +12,8 @@ export default class GameBootstrap {
   #runtime;
 
   #sizeManager;
+
+  #gameUI;
 
   static async create() {
     const game = new GameBootstrap();
@@ -50,6 +53,8 @@ export default class GameBootstrap {
       this.#contexts,
       this.#sizeManager,
     );
+
+    this.#gameUI = new GameUI(this.#runtime.game);
 
     this.#bindEvents();
 

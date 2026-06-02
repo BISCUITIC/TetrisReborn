@@ -5,11 +5,11 @@ class AuthUI {
   #authButton = document.getElementById("auth-button");
 
   constructor() {
-    this.render();
-    this.bindEvents();
+    this.#render();
+    this.#bindEvents();
   }
 
-  bindEvents() {
+  #bindEvents() {
     this.#authButton.addEventListener("click", () => {
       if (AuthManager.isAuthenticated()) {
         AuthManager.logout();
@@ -22,7 +22,7 @@ class AuthUI {
     EventBus.addEvent("auth:logout", () => this.render());
   }
 
-  render() {
+  #render() {
     if (AuthManager.isAuthenticated()) {
       this.#authButton.textContent = "Logout";
     } else {

@@ -17,8 +17,12 @@ export default class Game {
 
   #speedUp;
 
+  #isPaused;
   #gameOver;
 
+  get isPaused() {
+    return this.#isPaused;
+  }
   get gameOver() {
     return this.#gameOver;
   }
@@ -28,6 +32,14 @@ export default class Game {
   }
   get keySpeed() {
     return Game.keySpeed;
+  }
+
+  togglePause() {
+    this.#isPaused = !this.#isPaused;
+
+    if (!this.#isPaused) {
+      this.#keyManager.clear();
+    }
   }
 
   constructor(board, tetraminoManager, keyboardManager) {
@@ -43,10 +55,15 @@ export default class Game {
 
     this.#speedUp = false;
 
+    this.#isPaused = false;
     this.#gameOver = false;
   }
 
   update(context) {
+    if (this.#isPaused) {
+      return;
+    }
+
     context.drawContext.clearRect(
       0,
       0,
