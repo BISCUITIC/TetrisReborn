@@ -82,12 +82,12 @@ export default class GameBootstrap {
   }
 
   loop = () => {
-    if (this.#runtime.game.gameOver) return;
-
-    this.#runtime.game.update({
-      drawContext: this.#contexts.gameField,
-      sizeManager: this.#sizeManager,
-    });
+    if (!this.#runtime.game.gameOver) {
+      this.#runtime.game.update({
+        drawContext: this.#contexts.gameField,
+        sizeManager: this.#sizeManager,
+      });
+    }
 
     requestAnimationFrame(this.loop);
   };

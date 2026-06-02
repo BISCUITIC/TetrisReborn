@@ -90,6 +90,23 @@ export default class Game {
     this.#keyCounter++;
   }
 
+  restart() {
+    this.#board.clear();
+
+    this.#tetramino = this.#tetraminoManager.next;
+
+    this.#frameCounter = 0;
+    this.#keyCounter = 0;
+
+    this.#speedUp = false;
+    this.#isPaused = false;
+    this.#gameOver = false;
+
+    this.#keyManager.clear();
+
+    EventBus.call("game:init");
+  }
+
   #keyLogger() {
     const {
       right: rightPressed,

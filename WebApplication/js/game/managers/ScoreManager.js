@@ -10,6 +10,12 @@ export default class ScoreManager {
   constructor(points) {
     this.#points = points;
 
+    this.#init();
+
+    this.#bindEvents();
+  }
+
+  #init() {
     this.#score = 0;
     this.#bestScore = this.#getBestScore();
 
@@ -17,8 +23,6 @@ export default class ScoreManager {
       score: this.#score,
       bestScore: this.#bestScore,
     });
-
-    this.#bindEvents();
   }
 
   #bindEvents() {
@@ -28,6 +32,10 @@ export default class ScoreManager {
 
     EventBus.addEvent("game:gameOver", () => {
       this.#finish();
+    });
+
+    EventBus.addEvent("game:init", () => {
+      this.#init();
     });
   }
 

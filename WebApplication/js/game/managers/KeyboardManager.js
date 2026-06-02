@@ -35,8 +35,6 @@ export default class KeyboardManager {
       rotate: false,
       speedUp: false,
     };
-
-    console.log("ASDASDASDASDASD");
   }
 
   constructor() {

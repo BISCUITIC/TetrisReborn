@@ -73,4 +73,10 @@ export default class Board {
       }
     }
   }
+
+  clear() {
+    for (let y = 0; y < this.height; y++) {
+      this.field[y].fill(0);
+    }
+  }
 }
